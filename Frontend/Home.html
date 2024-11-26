@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechShop - Home</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-link {
+            color: #333;
+        }
+
+        .banner {
+            background: linear-gradient(45deg, #000, #333);
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner img {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .category-icons {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .category-item {
+            text-align: center;
+            padding: 1rem;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .category-item i {
+            font-size: 2rem;
+            color: #1976d2;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .price {
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        .offer-badge {
+            background-color: #28a745;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .btn-add-cart {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-add-cart:hover {
+            background-color: #1565c0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">TechShop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Categorías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Marcas</a>
+                    </li>
+                </ul>
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Buscar artículos">
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                <div class="d-flex">
+                    <a href="cart.html" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                    <a href="login.html" class="btn btn-primary">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner de cotización -->
+    <div class="container mt-4">
+        <div class="banner">
+            <div class="banner-content">
+                <h2>COTIZA TÚ MISMO</h2>
+                <p>TAN SIMPLE COMO SELECCIONAR LOS COMPONENTES PARA TU ENSAMBLE PREFERIDO</p>
+                <a href="chat.html" class="btn btn-light">
+                    <i class="fas fa-calculator"></i> CLICK HERE
+                </a>
+            </div>
+            <img src="pc-components.jpg" alt="PC Components">
+        </div>
+    </div>
+
+    <!-- Iconos de categorías -->
+    <div class="container">
+        <div class="category-icons">
+            <a href="#" class="category-item">
+                <i class="fas fa-desktop"></i>
+                <p>PC COMPLETA</p>
+            </a>
+            <a href="#" class="category-item">
+                <i class="fas fa-microchip"></i>
+                <p>COMPONENTES</p>
+            </a>
+            <a href="#" class="category-item">
+                <i class="fas fa-keyboard"></i>
+                <p>PERIFÉRICOS</p>
+            </a>
+            <a href="#" class="category-item">
+                <i class="fas fa-laptop"></i>
+                <p>LAPTOPS</p>
+            </a>
+            <a href="#" class="category-item">
+                <i class="fas fa-headset"></i>
+                <p>AUDIO</p>
+            </a>
+            <a href="#" class="category-item">
+                <i class="fas fa-mobile-alt"></i>
+                <p>CELULARES</p>
+            </a>
+            <a href="#" class="category-item">
+                <i class="fas fa-gamepad"></i>
+                <p>GAMING</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- Productos -->
+    <div class="container" id="productosContainer">
+        <h3 class="mb-4">TIENDA DE COMPUTADORAS Y ACCESORIOS</h3>
+        <div class="row">
+            <!-- Producto 1 -->
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img src="kingston-ssd.jpg" class="img-fluid mb-3" alt="Kingston SSD">
+                    <span class="offer-badge">OFERTA</span>
+                    <h5>Disco sólido SSD M.2 NVMe Kingston 500GB</h5>
+                    <p class="price">$54.99</p>
+                    <button class="btn btn-add-cart">Agregar al carrito</button>
+                </div>
+            </div>
+            <!-- Producto 2 -->
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img src="mouse.jpg" class="img-fluid mb-3" alt="Logitech Mouse">
+                    <h5>Mouse Logitech G305 Wireless</h5>
+                    <p class="price">$40.00</p>
+                    <button class="btn btn-add-cart">Agregar al carrito</button>
+                </div>
+            </div>
+            <!-- Producto 3 -->
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img src="hub.jpg" class="img-fluid mb-3" alt="Hub">
+                    <span class="offer-badge">OFERTA</span>
+                    <h5>Hub Controladora PWM + ARGB</h5>
+                    <p class="price">$19.99</p>
+                    <button class="btn btn-add-cart">Agregar al carrito</button>
+                </div>
+            </div>
+            <!-- Producto 4 -->
+            <div class="col-md-3">
+                <div class="product-card">
+                    <img src="soporte.jpg" class="img-fluid mb-3" alt="Soporte">
+                    <h5>Soporte Brazo Gamer para 2 monitores</h5>
+                    <p class="price">$75.00</p>
+                    <button class="btn btn-add-cart">Agregar al carrito</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
