@@ -239,8 +239,21 @@
         document.getElementById("productoModal")
       );
 
-      // Cargar productos al iniciar
-      document.addEventListener("DOMContentLoaded", cargarProductos);
+              // Un solo evento DOMContentLoaded que maneja todo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Primero verificamos la autorización
+            const email = localStorage.getItem('email_usuario');
+            console.log('Email almacenado:', email); // Para depuración
+            
+            if (!email || email !== 'asesor.comercial@gmail.com') {
+                alert('No tienes autorización para acceder a esta página');
+                window.location.href = 'home.html';
+                return;
+            }
+
+            // Si el usuario está autorizado, continuamos con la carga de productos
+            cargarProductos();
+        }); 
 
       function cargarProductos() {
         productos = JSON.parse(localStorage.getItem("productos")) || [

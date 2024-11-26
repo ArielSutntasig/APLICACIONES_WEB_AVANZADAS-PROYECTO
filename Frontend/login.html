@@ -66,6 +66,17 @@
         background-color: #1565c0;
         border-color: #1565c0;
       }
+
+      .btn-outline-primary {
+        border-color: #1976d2;
+        color: #1976d2;
+      }
+
+      .btn-outline-primary:hover {
+        background-color: #1976d2;
+        border-color: #1976d2;
+      }
+      
     </style>
   </head>
   <body>
@@ -125,11 +136,19 @@
           </div>
           <a href="Forgot.html" class="forgot-password">Forgot password?</a>
         </div>
-
+         
         <!-- Botón de login -->
         <button type="submit" class="btn btn-primary w-100 btn-login">
           LOGIN
         </button>
+
+              <!-- Separador y Sign up link -->
+      <div class="text-center mt-3">
+        <span class="signup-text">
+          Already have an account? <a href="Sing Up.html" class="Sing up">Sign up</a>
+        </span>
+      </div>
+
       </form>
     </div>
 
@@ -152,39 +171,47 @@
         }
       }
 
-      // Manejo del formulario
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
+          document.getElementById("loginForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-          try {
+        try {
             const response = await fetch("http://127.0.0.1:5000/login", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password }),
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
             });
 
             if (response.ok) {
-              const result = await response.json();
-              // Guardamos el ID del usuario en localStorage
-              localStorage.setItem("usuario_id", result.usuario_id);
-              localStorage.setItem("nombre_usuario", result.nombre_completo);
-              alert(`Bienvenido, ${result.nombre_completo}`);
-              window.location.href = "home.html";
+                const result = await response.json();
+                console.log('Datos recibidos:', result); // Para depurar
+
+                localStorage.setItem("usuario_id", result.usuario_id);
+                localStorage.setItem("nombre_usuario", result.nombre_completo);
+                localStorage.setItem("email_usuario", email); // Guardamos el email del input
+
+                // Verificación con console.log
+                console.log('Email ingresado:', email);
+                console.log('Email esperado: asesor.comercial@gmail.com');
+
+                            // Redirigir según el email
+                if (email === 'asesor.comercial@gmail.com') {
+                    window.location.href = "gestionProductos.html";
+                } else {
+                    window.location.href = "home.html";
+                }
             } else {
-              const error = await response.json();
-              alert(`Error: ${error.error}`);
+                const error = await response.json();
+                alert(`Error: ${error.error}`);
             }
-          } catch (err) {
-            alert(
-              "Error al conectar con el servidor. Intenta de nuevo más tarde."
-            );
-          }
-        });
+        } catch (err) {
+            console.error('Error completo:', err);
+            alert("Error al conectar con el servidor. Intenta de nuevo más tarde.");
+        }
+    });
+
     </script>
   </body>
 </html>
