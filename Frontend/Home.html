@@ -444,25 +444,25 @@
 
       // Función para actualizar el contador del carrito
       async function actualizarContadorCarrito(userId) {
-    try {
-        console.log('Actualizando contador para usuario:', userId);
-        const response = await fetch(`${API_URL}/carrito/${userId}`);
-        
-        if (!response.ok) {
-            throw new Error('Error al obtener carrito');
+        try {
+          console.log("Actualizando contador para usuario:", userId);
+          const response = await fetch(`${API_URL}/carrito/${userId}`);
+
+          if (!response.ok) {
+            throw new Error("Error al obtener carrito");
+          }
+
+          const items = await response.json();
+          console.log("Items en carrito:", items);
+
+          const count = items.reduce((total, item) => total + item.cantidad, 0);
+          console.log("Cantidad total:", count);
+
+          document.getElementById("cartCount").textContent = count;
+        } catch (error) {
+          console.error("Error al actualizar carrito:", error);
         }
-        
-        const items = await response.json();
-        console.log('Items en carrito:', items);
-        
-        const count = items.reduce((total, item) => total + item.cantidad, 0);
-        console.log('Cantidad total:', count);
-        
-        document.getElementById('cartCount').textContent = count;
-    } catch (error) {
-        console.error('Error al actualizar carrito:', error);
-    }
-}
+      }
 
       // Función para cargar productos
       async function loadProducts() {
@@ -574,64 +574,68 @@
       }
       // Función para agregar al carrito
       async function addToCart(productoId, precio) {
-    const userId = localStorage.getItem('usuario_id');
-    console.log('Intentando agregar al carrito:', { productoId, precio, userId });
-
-    if (!userId) {
-        Swal.fire({
-            title: 'Iniciar sesión',
-            text: 'Necesitas iniciar sesión para agregar productos al carrito',
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonText: 'Ir a login',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = 'login.html';
-            }
+        const userId = localStorage.getItem("usuario_id");
+        console.log("Intentando agregar al carrito:", {
+          productoId,
+          precio,
+          userId,
         });
-        return;
-    }
 
-    try {
-        const response = await fetch(`${API_URL}/carrito`, {
-            method: 'POST',
+        if (!userId) {
+          Swal.fire({
+            title: "Iniciar sesión",
+            text: "Necesitas iniciar sesión para agregar productos al carrito",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonText: "Ir a login",
+            cancelButtonText: "Cancelar",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "login.html";
+            }
+          });
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_URL}/carrito`, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                usuario_id: parseInt(userId),
-                producto_id: productoId,
-                cantidad: 1,
-                precio_unitario: parseFloat(precio)
-            })
-        });
+              usuario_id: parseInt(userId),
+              producto_id: productoId,
+              cantidad: 1,
+              precio_unitario: parseFloat(precio),
+            }),
+          });
 
-        console.log('Respuesta del servidor:', response.status);
-        const data = await response.json();
-        console.log('Datos de respuesta:', data);
+          console.log("Respuesta del servidor:", response.status);
+          const data = await response.json();
+          console.log("Datos de respuesta:", data);
 
-        if (response.ok) {
+          if (response.ok) {
             Swal.fire({
-                icon: 'success',
-                title: '¡Éxito!',
-                text: 'Producto agregado al carrito',
-                showConfirmButton: false,
-                timer: 1500
+              icon: "success",
+              title: "¡Éxito!",
+              text: "Producto agregado al carrito",
+              showConfirmButton: false,
+              timer: 1500,
             });
             await actualizarContadorCarrito(userId);
-        } else {
-            throw new Error(data.error || 'Error al agregar al carrito');
+          } else {
+            throw new Error(data.error || "Error al agregar al carrito");
+          }
+        } catch (error) {
+          console.error("Error completo:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo agregar el producto al carrito",
+          });
         }
-    } catch (error) {
-        console.error('Error completo:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo agregar el producto al carrito'
-        });
-    }
-}
+      }
 
       // Función para buscar productos
       function searchProducts() {

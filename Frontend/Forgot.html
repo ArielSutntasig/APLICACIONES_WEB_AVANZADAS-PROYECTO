@@ -1,262 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TechShop - Reset Password</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #f0f2f5;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      body {
+        background-color: #f0f2f5;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .forgot-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
+      .forgot-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
 
-        .lock-icon {
-            text-align: center;
-            font-size: 4rem;
-            color: #1976d2;
-            margin-bottom: 1.5rem;
-        }
+      .lock-icon {
+        text-align: center;
+        font-size: 4rem;
+        color: #1976d2;
+        margin-bottom: 1.5rem;
+      }
 
-        .title {
-            text-align: center;
-            color: #1976d2;
-            margin-bottom: 1rem;
-        }
+      .title {
+        text-align: center;
+        color: #1976d2;
+        margin-bottom: 1rem;
+      }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+      .form-group {
+        margin-bottom: 1rem;
+      }
 
-        .password-toggle {
-            cursor: pointer;
-        }
+      .password-toggle {
+        cursor: pointer;
+      }
 
-        .btn-reset {
-            background-color: #1976d2;
-            border-color: #1976d2;
-        }
+      .btn-reset {
+        background-color: #1976d2;
+        border-color: #1976d2;
+      }
 
-        .btn-reset:hover {
-            background-color: #1565c0;
-            border-color: #1565c0;
-        }
+      .btn-reset:hover {
+        background-color: #1565c0;
+        border-color: #1565c0;
+      }
 
-        .back-to-login {
-            color: #1976d2;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
+      .back-to-login {
+        color: #1976d2;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
 
-        .back-to-login:hover {
-            text-decoration: underline;
-        }
+      .back-to-login:hover {
+        text-decoration: underline;
+      }
 
-        .password-requirements {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 0.5rem;
-        }
+      .password-requirements {
+        font-size: 0.8rem;
+        color: #666;
+        margin-top: 0.5rem;
+      }
 
-        .invalid-feedback {
-            display: none;
-            font-size: 0.8rem;
-            color: #dc3545;
-        }
+      .invalid-feedback {
+        display: none;
+        font-size: 0.8rem;
+        color: #dc3545;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="forgot-container">
-        <!-- Ícono y título -->
-        <div class="lock-icon">
-            <i class="fas fa-lock"></i>
+      <!-- Ícono y título -->
+      <div class="lock-icon">
+        <i class="fas fa-lock"></i>
+      </div>
+      <h2 class="title">Reset Password</h2>
+
+      <!-- Formulario de reseteo -->
+      <form id="resetForm">
+        <!-- Email -->
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-envelope"></i>
+            </span>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="invalid-feedback">Please enter a valid email address</div>
         </div>
-        <h2 class="title">Reset Password</h2>
 
-        <!-- Formulario de reseteo -->
-        <form id="resetForm">
-            <!-- Email -->
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fas fa-envelope"></i>
-                    </span>
-                    <input 
-                        type="email"
-                        id="email"
-                        class="form-control"
-                        placeholder="Enter your email"
-                        required
-                    >
-                </div>
-                <div class="invalid-feedback">Please enter a valid email address</div>
-            </div>
+        <!-- Nueva Contraseña -->
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input
+              type="password"
+              id="newPassword"
+              class="form-control"
+              placeholder="New Password"
+              required
+            />
+            <span
+              class="input-group-text password-toggle"
+              onclick="togglePassword('newPassword', 'toggleIcon1')"
+            >
+              <i class="fas fa-eye" id="toggleIcon1"></i>
+            </span>
+          </div>
+          <div class="password-requirements">
+            Password must contain at least 8 characters, including uppercase,
+            lowercase letters and numbers
+          </div>
+          <div class="invalid-feedback">
+            Password must meet the requirements
+          </div>
+        </div>
 
-            <!-- Nueva Contraseña -->
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                    <input 
-                        type="password"
-                        id="newPassword"
-                        class="form-control"
-                        placeholder="New Password"
-                        required
-                    >
-                    <span class="input-group-text password-toggle" onclick="togglePassword('newPassword', 'toggleIcon1')">
-                        <i class="fas fa-eye" id="toggleIcon1"></i>
-                    </span>
-                </div>
-                <div class="password-requirements">
-                    Password must contain at least 8 characters, including uppercase, lowercase letters and numbers
-                </div>
-                <div class="invalid-feedback">Password must meet the requirements</div>
-            </div>
+        <!-- Confirmar Nueva Contraseña -->
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input
+              type="password"
+              id="confirmPassword"
+              class="form-control"
+              placeholder="Confirm New Password"
+              required
+            />
+            <span
+              class="input-group-text password-toggle"
+              onclick="togglePassword('confirmPassword', 'toggleIcon2')"
+            >
+              <i class="fas fa-eye" id="toggleIcon2"></i>
+            </span>
+          </div>
+          <div class="invalid-feedback">Passwords do not match</div>
+        </div>
 
-            <!-- Confirmar Nueva Contraseña -->
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                    <input 
-                        type="password"
-                        id="confirmPassword"
-                        class="form-control"
-                        placeholder="Confirm New Password"
-                        required
-                    >
-                    <span class="input-group-text password-toggle" onclick="togglePassword('confirmPassword', 'toggleIcon2')">
-                        <i class="fas fa-eye" id="toggleIcon2"></i>
-                    </span>
-                </div>
-                <div class="invalid-feedback">Passwords do not match</div>
-            </div>
+        <!-- Botón de reseteo -->
+        <button type="submit" class="btn btn-primary w-100 btn-reset mb-3">
+          RESET PASSWORD
+        </button>
 
-            <!-- Botón de reseteo -->
-            <button type="submit" class="btn btn-primary w-100 btn-reset mb-3">RESET PASSWORD</button>
-
-            <!-- Link para volver al login -->
-            <div class="text-center">
-                <a href="login.html" class="back-to-login">
-                    <i class="fas fa-arrow-left"></i> Back to Login
-                </a>
-            </div>
-        </form>
+        <!-- Link para volver al login -->
+        <div class="text-center">
+          <a href="login.html" class="back-to-login">
+            <i class="fas fa-arrow-left"></i> Back to Login
+          </a>
+        </div>
+      </form>
     </div>
 
     <!-- Bootstrap JS y dependencias -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Función para mostrar/ocultar contraseña
-        function togglePassword(inputId, iconId) {
-            const passwordInput = document.getElementById(inputId);
-            const toggleIcon = document.getElementById(iconId);
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
+      // Función para mostrar/ocultar contraseña
+      function togglePassword(inputId, iconId) {
+        const passwordInput = document.getElementById(inputId);
+        const toggleIcon = document.getElementById(iconId);
 
-        // Validación de contraseña
-        function validatePassword(password) {
-            const minLength = 8;
-            const hasUpperCase = /[A-Z]/.test(password);
-            const hasLowerCase = /[a-z]/.test(password);
-            const hasNumbers = /\d/.test(password);
-            
-            return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers;
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          toggleIcon.classList.remove("fa-eye");
+          toggleIcon.classList.add("fa-eye-slash");
+        } else {
+          passwordInput.type = "password";
+          toggleIcon.classList.remove("fa-eye-slash");
+          toggleIcon.classList.add("fa-eye");
         }
+      }
 
-        // Manejo del formulario
-                document.getElementById('resetForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            let isValid = true;
-            
-            // Email validation
-            const email = document.getElementById('email');
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email.value)) {
-                email.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                email.classList.remove('is-invalid');
-            }
-        
-            // Password validation
-            const newPassword = document.getElementById('newPassword');
-            const confirmPassword = document.getElementById('confirmPassword');
-            
-            if (!validatePassword(newPassword.value)) {
-                newPassword.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                newPassword.classList.remove('is-invalid');
-            }
-        
-            // Confirm password validation
-            if (newPassword.value !== confirmPassword.value) {
-                confirmPassword.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                confirmPassword.classList.remove('is-invalid');
-            }
-        
-            if (isValid) {
-                try {
-                    const response = await fetch('http://127.0.0.1:5000/reset-password', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            email: email.value,
-                            new_password: newPassword.value
-                        })
-                    });
-        
-                    if (response.ok) {
-                        alert('Password reset successful!');
-                        window.location.href = 'login.html';
-                    } else {
-                        const error = await response.json();
-                        alert(`Error: ${error.error}`);
-                    }
-                } catch (err) {
-                    alert('Error connecting to server. Please try again later.');
+      // Validación de contraseña
+      function validatePassword(password) {
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+
+        return (
+          password.length >= minLength &&
+          hasUpperCase &&
+          hasLowerCase &&
+          hasNumbers
+        );
+      }
+
+      // Manejo del formulario
+      document
+        .getElementById("resetForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          let isValid = true;
+
+          // Email validation
+          const email = document.getElementById("email");
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(email.value)) {
+            email.classList.add("is-invalid");
+            isValid = false;
+          } else {
+            email.classList.remove("is-invalid");
+          }
+
+          // Password validation
+          const newPassword = document.getElementById("newPassword");
+          const confirmPassword = document.getElementById("confirmPassword");
+
+          if (!validatePassword(newPassword.value)) {
+            newPassword.classList.add("is-invalid");
+            isValid = false;
+          } else {
+            newPassword.classList.remove("is-invalid");
+          }
+
+          // Confirm password validation
+          if (newPassword.value !== confirmPassword.value) {
+            confirmPassword.classList.add("is-invalid");
+            isValid = false;
+          } else {
+            confirmPassword.classList.remove("is-invalid");
+          }
+
+          if (isValid) {
+            try {
+              const response = await fetch(
+                "http://127.0.0.1:5000/reset-password",
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    email: email.value,
+                    new_password: newPassword.value,
+                  }),
                 }
+              );
+
+              if (response.ok) {
+                alert("Password reset successful!");
+                window.location.href = "login.html";
+              } else {
+                const error = await response.json();
+                alert(`Error: ${error.error}`);
+              }
+            } catch (err) {
+              alert("Error connecting to server. Please try again later.");
             }
+          }
         });
 
-        // Limpiar validaciones al escribir
-        ['email', 'newPassword', 'confirmPassword'].forEach(id => {
-            document.getElementById(id).addEventListener('input', function() {
-                if (this.classList.contains('is-invalid')) {
-                    this.classList.remove('is-invalid');
-                }
-            });
+      // Limpiar validaciones al escribir
+      ["email", "newPassword", "confirmPassword"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", function () {
+          if (this.classList.contains("is-invalid")) {
+            this.classList.remove("is-invalid");
+          }
         });
+      });
     </script>
-</body>
+  </body>
 </html>

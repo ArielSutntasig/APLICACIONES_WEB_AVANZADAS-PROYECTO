@@ -1,173 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TechShop - Login</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #f0f2f5;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      body {
+        background-color: #f0f2f5;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .login-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
+      .login-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
 
-        .user-icon {
-            text-align: center;
-            font-size: 4rem;
-            color: #1976d2;
-            margin-bottom: 1.5rem;
-        }
+      .user-icon {
+        text-align: center;
+        font-size: 4rem;
+        color: #1976d2;
+        margin-bottom: 1.5rem;
+      }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+      .form-group {
+        margin-bottom: 1rem;
+      }
 
-        .password-toggle {
-            cursor: pointer;
-        }
+      .password-toggle {
+        cursor: pointer;
+      }
 
-        .forgot-password {
-            color: #1976d2;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
+      .forgot-password {
+        color: #1976d2;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
 
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
+      .forgot-password:hover {
+        text-decoration: underline;
+      }
 
-        .btn-login {
-            background-color: #1976d2;
-            border-color: #1976d2;
-        }
+      .btn-login {
+        background-color: #1976d2;
+        border-color: #1976d2;
+      }
 
-        .btn-login:hover {
-            background-color: #1565c0;
-            border-color: #1565c0;
-        }
+      .btn-login:hover {
+        background-color: #1565c0;
+        border-color: #1565c0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="login-container">
-        <!-- Ícono de usuario -->
-        <div class="user-icon">
-            <i class="fas fa-user-circle"></i>
+      <!-- Ícono de usuario -->
+      <div class="user-icon">
+        <i class="fas fa-user-circle"></i>
+      </div>
+
+      <!-- Formulario de login -->
+      <form id="loginForm">
+        <!-- Campo de usuario -->
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-user"></i>
+            </span>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="Email"
+              required
+            />
+          </div>
         </div>
 
-        <!-- Formulario de login -->
-        <form id="loginForm">
-            <!-- Campo de usuario -->
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fas fa-user"></i>
-                    </span>
-                    <input 
-                        type="email"
-                        id="email"
-                        class="form-control"
-                        placeholder="Email"
-                        required
-                    >
-                </div>
-            </div>
+        <!-- Campo de contraseña -->
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              placeholder="Password"
+              required
+            />
+            <span
+              class="input-group-text password-toggle"
+              onclick="togglePassword()"
+            >
+              <i class="fas fa-eye" id="toggleIcon"></i>
+            </span>
+          </div>
+        </div>
 
-            <!-- Campo de contraseña -->
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                    <input 
-                        type="password"
-                        id="password"
-                        class="form-control"
-                        placeholder="Password"
-                        required
-                    >
-                    <span class="input-group-text password-toggle" onclick="togglePassword()">
-                        <i class="fas fa-eye" id="toggleIcon"></i>
-                    </span>
-                </div>
-            </div>
+        <!-- Remember me y Forgot password -->
+        <div
+          class="form-group d-flex justify-content-between align-items-center"
+        >
+          <div class="form-check">
+            <input type="checkbox" id="rememberMe" class="form-check-input" />
+            <label class="form-check-label" for="rememberMe">Remember me</label>
+          </div>
+          <a href="Forgot.html" class="forgot-password">Forgot password?</a>
+        </div>
 
-            <!-- Remember me y Forgot password -->
-            <div class="form-group d-flex justify-content-between align-items-center">
-                <div class="form-check">
-                    <input type="checkbox" id="rememberMe" class="form-check-input">
-                    <label class="form-check-label" for="rememberMe">Remember me</label>
-                </div>
-                <a href="Forgot.html" class="forgot-password">Forgot password?</a>
-            </div>
-
-            <!-- Botón de login -->
-            <button type="submit" class="btn btn-primary w-100 btn-login">LOGIN</button>
-        </form>
+        <!-- Botón de login -->
+        <button type="submit" class="btn btn-primary w-100 btn-login">
+          LOGIN
+        </button>
+      </form>
     </div>
 
     <!-- Bootstrap JS y dependencias -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Función para mostrar/ocultar contraseña
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.getElementById('toggleIcon');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
+      // Función para mostrar/ocultar contraseña
+      function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.getElementById("toggleIcon");
 
-        // Manejo del formulario
-                document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-        
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-        
-            try {
-                const response = await fetch('http://127.0.0.1:5000/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-        
-                if (response.ok) {
-                    const result = await response.json();
-                    // Guardamos el ID del usuario en localStorage
-                    localStorage.setItem('usuario_id', result.usuario_id);
-                    localStorage.setItem('nombre_usuario', result.nombre_completo);
-                    alert(`Bienvenido, ${result.nombre_completo}`);
-                    window.location.href = 'home.html';
-                } else {
-                    const error = await response.json();
-                    alert(`Error: ${error.error}`);
-                }
-            } catch (err) {
-                alert('Error al conectar con el servidor. Intenta de nuevo más tarde.');
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          toggleIcon.classList.remove("fa-eye");
+          toggleIcon.classList.add("fa-eye-slash");
+        } else {
+          passwordInput.type = "password";
+          toggleIcon.classList.remove("fa-eye-slash");
+          toggleIcon.classList.add("fa-eye");
+        }
+      }
+
+      // Manejo del formulario
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          try {
+            const response = await fetch("http://127.0.0.1:5000/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              // Guardamos el ID del usuario en localStorage
+              localStorage.setItem("usuario_id", result.usuario_id);
+              localStorage.setItem("nombre_usuario", result.nombre_completo);
+              alert(`Bienvenido, ${result.nombre_completo}`);
+              window.location.href = "home.html";
+            } else {
+              const error = await response.json();
+              alert(`Error: ${error.error}`);
             }
+          } catch (err) {
+            alert(
+              "Error al conectar con el servidor. Intenta de nuevo más tarde."
+            );
+          }
         });
     </script>
-</body>
+  </body>
 </html>

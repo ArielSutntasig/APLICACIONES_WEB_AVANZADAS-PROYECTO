@@ -1,3 +1,4 @@
+import datetime
 from flask import Blueprint, jsonify, request, render_template, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -8,28 +9,6 @@ import os
 
 main = Blueprint('main', __name__)
 CORS(main)
-
-# Ruta principal para mostrar la página home
-@main.route('/')
-def home():
-    return render_template('home.html')
-
-# Ruta para mostrar la página del carrito
-@main.route('/carrito')
-def mostrar_carrito():
-    return render_template('Cart.html')
-
-@main.route('/login')
-def login_page():
-    return render_template('login.html')
-
-@main.route('/perfil')
-def perfil():
-    return render_template('login.html')
-
-@main.route('/ordenes')
-def ordenes():
-    return render_template('Cart.html')
 
 # Crear un nuevo usuario
 @main.route('/usuarios', methods=['POST'])

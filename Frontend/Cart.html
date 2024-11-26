@@ -261,38 +261,37 @@
       const IVA_RATE = 0.12;
 
       async function loadCartItems() {
-    const userId = localStorage.getItem("usuario_id");
-    console.log("Cargando items para usuario:", userId);
+        const userId = localStorage.getItem("usuario_id");
+        console.log("Cargando items para usuario:", userId);
 
-    if (!userId) {
-        window.location.href = "login.html";
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_URL}/carrito/${userId}`);
-        console.log("Respuesta del servidor:", response.status);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        if (!userId) {
+          window.location.href = "login.html";
+          return;
         }
 
-        const data = await response.json();
-        console.log("Datos recibidos:", data);
+        try {
+          const response = await fetch(`${API_URL}/carrito/${userId}`);
+          console.log("Respuesta del servidor:", response.status);
 
-        if (Array.isArray(data)) {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Datos recibidos:", data);
+
+          if (Array.isArray(data)) {
             cartItems = data;
             console.log("Items cargados:", cartItems.length);
             renderCart();
-        } else {
-            throw new Error('Formato de datos inválido');
+          } else {
+            throw new Error("Formato de datos inválido");
+          }
+        } catch (error) {
+          console.error("Error al cargar el carrito:", error);
+          showEmptyCart();
         }
-    } catch (error) {
-        console.error("Error al cargar el carrito:", error);
-        showEmptyCart();
-    }
-}
-
+      }
 
       function showEmptyCart() {
         document.getElementById("cartContent").style.display = "none";
@@ -361,34 +360,40 @@
       }
 
       function updateSummary() {
-    const subtotal = cartItems.reduce((sum, item) => {
-        return sum + (item.precio_unitario * item.cantidad);
-    }, 0);
-    
-    console.log("Subtotal calculado:", subtotal);
-    const iva = subtotal * IVA_RATE;
-    const total = subtotal + iva + SHIPPING_COST;
+        const subtotal = cartItems.reduce((sum, item) => {
+          return sum + item.precio_unitario * item.cantidad;
+        }, 0);
 
-    document.getElementById("subtotalAmount").textContent = `$${subtotal.toFixed(2)}`;
-    document.getElementById("shippingAmount").textContent = `$${SHIPPING_COST.toFixed(2)}`;
-    document.getElementById("ivaAmount").textContent = `$${iva.toFixed(2)}`;
-    document.getElementById("totalAmount").textContent = `$${total.toFixed(2)}`;
-}
+        console.log("Subtotal calculado:", subtotal);
+        const iva = subtotal * IVA_RATE;
+        const total = subtotal + iva + SHIPPING_COST;
 
-function renderCart() {
-    if (cartItems.length === 0) {
-        showEmptyCart();
-        return;
-    }
+        document.getElementById(
+          "subtotalAmount"
+        ).textContent = `$${subtotal.toFixed(2)}`;
+        document.getElementById(
+          "shippingAmount"
+        ).textContent = `$${SHIPPING_COST.toFixed(2)}`;
+        document.getElementById("ivaAmount").textContent = `$${iva.toFixed(2)}`;
+        document.getElementById("totalAmount").textContent = `$${total.toFixed(
+          2
+        )}`;
+      }
 
-    const cartContainer = document.getElementById("cartItemsContainer");
-    cartContainer.innerHTML = cartItems
-        .map(item => {
+      function renderCart() {
+        if (cartItems.length === 0) {
+          showEmptyCart();
+          return;
+        }
+
+        const cartContainer = document.getElementById("cartItemsContainer");
+        cartContainer.innerHTML = cartItems
+          .map((item) => {
             // Construye la URL completa de la imagen
-            const imageUrl = item.imagen.startsWith('http') 
-                ? item.imagen 
-                : `${API_URL}${item.imagen}`;
-            
+            const imageUrl = item.imagen.startsWith("http")
+              ? item.imagen
+              : `${API_URL}${item.imagen}`;
+
             return `
                 <div class="cart-item" data-producto-id="${item.producto_id}">
                     <img src="${imageUrl}" 
@@ -396,38 +401,49 @@ function renderCart() {
                          onerror="this.src='${API_URL}/static/images/default-product.jpg'">
                     <div class="item-details">
                         <div class="item-title">${item.producto}</div>
-                        <div class="item-price">$${item.precio_unitario.toFixed(2)}</div>
+                        <div class="item-price">$${item.precio_unitario.toFixed(
+                          2
+                        )}</div>
                     </div>
                     <div class="quantity-controls">
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                        <input type="number" class="quantity-input" value="${item.cantidad}" 
-                               min="1" max="99" onchange="updateQuantity(${item.id}, 0, this.value)">
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        <button class="quantity-btn" onclick="updateQuantity(${
+                          item.id
+                        }, -1)">-</button>
+                        <input type="number" class="quantity-input" value="${
+                          item.cantidad
+                        }" 
+                               min="1" max="99" onchange="updateQuantity(${
+                                 item.id
+                               }, 0, this.value)">
+                        <button class="quantity-btn" onclick="updateQuantity(${
+                          item.id
+                        }, 1)">+</button>
                     </div>
                     <div class="remove-btn" onclick="removeItem(${item.id})">
                         <i class="fas fa-trash"></i>
                     </div>
                 </div>
             `;
-        }).join("");
+          })
+          .join("");
 
-    document.getElementById("cartContent").style.display = "flex";
-    document.getElementById("emptyCart").style.display = "none";
-    updateSummary();
-}
+        document.getElementById("cartContent").style.display = "flex";
+        document.getElementById("emptyCart").style.display = "none";
+        updateSummary();
+      }
 
-document.addEventListener("DOMContentLoaded", async () => {
-    console.log("Iniciando carga del carrito...");
-    const userId = localStorage.getItem("usuario_id");
-    console.log("ID de usuario:", userId);
-    
-    if (!userId) {
-        console.log("No hay usuario logueado");
-        showEmptyCart();
-        return;
-    }
-    await loadCartItems();
-});
+      document.addEventListener("DOMContentLoaded", async () => {
+        console.log("Iniciando carga del carrito...");
+        const userId = localStorage.getItem("usuario_id");
+        console.log("ID de usuario:", userId);
+
+        if (!userId) {
+          console.log("No hay usuario logueado");
+          showEmptyCart();
+          return;
+        }
+        await loadCartItems();
+      });
 
       document
         .querySelector(".checkout-btn")

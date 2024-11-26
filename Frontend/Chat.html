@@ -1,358 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TechShop - Chat de Cotización</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #f0f2f5;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+      body {
+        background-color: #f0f2f5;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-        .navbar {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+      .navbar {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-        .chat-container {
-            flex: 1;
-            display: flex;
-            padding: 20px;
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-        }
+      .chat-container {
+        flex: 1;
+        display: flex;
+        padding: 20px;
+        gap: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+        width: 100%;
+      }
 
-        .contacts-section {
-            width: 300px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
+      .contacts-section {
+        width: 300px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+      }
 
-        .chat-section {
-            flex: 1;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
+      .chat-section {
+        flex: 1;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+      }
 
-        .chat-header {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            background-color: #1976d2;
-            color: white;
-            border-radius: 8px 8px 0 0;
-        }
+      .chat-header {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        background-color: #1976d2;
+        color: white;
+        border-radius: 8px 8px 0 0;
+      }
 
-        .chat-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            max-height: calc(100vh - 250px);
-        }
+      .chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        max-height: calc(100vh - 250px);
+      }
 
-        .message {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
+      .message {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+      }
 
-        .message-content {
-            max-width: 70%;
-            padding: 10px 15px;
-            border-radius: 15px;
-            margin-bottom: 5px;
-        }
+      .message-content {
+        max-width: 70%;
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin-bottom: 5px;
+      }
 
-        .message-time {
-            font-size: 0.75rem;
-            color: #666;
-        }
+      .message-time {
+        font-size: 0.75rem;
+        color: #666;
+      }
 
-        .message.received {
-            align-items: flex-start;
-        }
+      .message.received {
+        align-items: flex-start;
+      }
 
-        .message.sent {
-            align-items: flex-end;
-        }
+      .message.sent {
+        align-items: flex-end;
+      }
 
-        .received .message-content {
-            background-color: #f0f2f5;
-        }
+      .received .message-content {
+        background-color: #f0f2f5;
+      }
 
-        .sent .message-content {
-            background-color: #1976d2;
-            color: white;
-        }
+      .sent .message-content {
+        background-color: #1976d2;
+        color: white;
+      }
 
-        .chat-input {
-            padding: 15px;
-            border-top: 1px solid #ddd;
-            background-color: white;
-            border-radius: 0 0 8px 8px;
-        }
+      .chat-input {
+        padding: 15px;
+        border-top: 1px solid #ddd;
+        background-color: white;
+        border-radius: 0 0 8px 8px;
+      }
 
-        .chat-input form {
-            display: flex;
-            gap: 10px;
-        }
+      .chat-input form {
+        display: flex;
+        gap: 10px;
+      }
 
-        .chat-input input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            outline: none;
-        }
+      .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
+      }
 
-        .chat-input button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            background-color: #1976d2;
-            color: white;
-            cursor: pointer;
-        }
+      .chat-input button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 20px;
+        background-color: #1976d2;
+        color: white;
+        cursor: pointer;
+      }
 
-        .chat-input button:hover {
-            background-color: #1565c0;
-        }
+      .chat-input button:hover {
+        background-color: #1565c0;
+      }
 
-        .contacts-header {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            background-color: #1976d2;
-            color: white;
-            border-radius: 8px 8px 0 0;
-        }
+      .contacts-header {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        background-color: #1976d2;
+        color: white;
+        border-radius: 8px 8px 0 0;
+      }
 
-        .contact-list {
-            flex: 1;
-            overflow-y: auto;
-        }
+      .contact-list {
+        flex: 1;
+        overflow-y: auto;
+      }
 
-        .contact-item {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+      .contact-item {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-        .contact-item:hover {
-            background-color: #f8f9fa;
-        }
+      .contact-item:hover {
+        background-color: #f8f9fa;
+      }
 
-        .contact-item.active {
-            background-color: #e9ecef;
-        }
+      .contact-item.active {
+        background-color: #e9ecef;
+      }
 
-        .contact-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #1976d2;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      .contact-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #1976d2;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .contact-info {
-            flex: 1;
-        }
+      .contact-info {
+        flex: 1;
+      }
 
-        .contact-name {
-            font-weight: bold;
-            margin-bottom: 3px;
-        }
+      .contact-name {
+        font-weight: bold;
+        margin-bottom: 3px;
+      }
 
-        .contact-status {
-            font-size: 0.8rem;
-            color: #28a745;
-        }
+      .contact-status {
+        font-size: 0.8rem;
+        color: #28a745;
+      }
 
-        .product-card {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            gap: 10px;
-        }
+      .product-card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        gap: 10px;
+      }
 
-        .product-image {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
+      .product-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
 
-        .product-details {
-            flex: 1;
-        }
+      .product-details {
+        flex: 1;
+      }
 
-        .product-price {
-            color: #1976d2;
-            font-weight: bold;
-        }
+      .product-price {
+        color: #1976d2;
+        font-weight: bold;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="home.html">TechShop</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="home.html">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Categorías</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Marcas</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="home.html">TechShop</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="home.html">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Categorías</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Marcas</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- Chat Container -->
     <div class="chat-container">
-        <!-- Contacts Section -->
-        <div class="contacts-section">
-            <div class="contacts-header">
-                <h5 class="mb-0">Asesores Disponibles</h5>
-            </div>
-            <div class="contact-list">
-                <div class="contact-item active">
-                    <div class="contact-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-name">Juan Pérez</div>
-                        <div class="contact-status">En línea</div>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="contact-info">
-                        <div class="contact-name">María García</div>
-                        <div class="contact-status">En línea</div>
-                    </div>
-                </div>
-            </div>
+      <!-- Contacts Section -->
+      <div class="contacts-section">
+        <div class="contacts-header">
+          <h5 class="mb-0">Asesores Disponibles</h5>
         </div>
-
-        <!-- Chat Section -->
-        <div class="chat-section">
-            <div class="chat-header">
-                <h5 class="mb-0">Chat de Cotización - Juan Pérez</h5>
+        <div class="contact-list">
+          <div class="contact-item active">
+            <div class="contact-avatar">
+              <i class="fas fa-user"></i>
             </div>
-            <div class="chat-messages" id="chatMessages">
-                <!-- Mensaje de bienvenida -->
-                <div class="message received">
-                    <div class="message-content">
-                        ¡Hola! Soy Juan, tu asesor personal. ¿En qué puedo ayudarte con tu cotización?
-                    </div>
-                    <div class="message-time">10:30 AM</div>
-                </div>
-
-                <!-- Ejemplo de producto compartido -->
-                <div class="message received">
-                    <div class="message-content">
-                        Te recomiendo este procesador para tu build:
-                        <div class="product-card">
-                            <img src="processor.jpg" alt="Processor" class="product-image">
-                            <div class="product-details">
-                                <div class="product-name">Intel Core i7-12700K</div>
-                                <div class="product-price">$399.99</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-time">10:32 AM</div>
-                </div>
-
-                <!-- Mensaje del usuario -->
-                <div class="message sent">
-                    <div class="message-content">
-                        Gracias, ¿qué tarjeta madre me recomiendas que sea compatible?
-                    </div>
-                    <div class="message-time">10:33 AM</div>
-                </div>
+            <div class="contact-info">
+              <div class="contact-name">Juan Pérez</div>
+              <div class="contact-status">En línea</div>
             </div>
-            <div class="chat-input">
-                <form id="chatForm">
-                    <input type="text" placeholder="Escribe tu mensaje..." id="messageInput">
-                    <button type="submit">
-                        <i class="fas fa-paper-plane"></i> Enviar
-                    </button>
-                </form>
+          </div>
+          <div class="contact-item">
+            <div class="contact-avatar">
+              <i class="fas fa-user"></i>
             </div>
+            <div class="contact-info">
+              <div class="contact-name">María García</div>
+              <div class="contact-status">En línea</div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Chat Section -->
+      <div class="chat-section">
+        <div class="chat-header">
+          <h5 class="mb-0">Chat de Cotización - Juan Pérez</h5>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <!-- Mensaje de bienvenida -->
+          <div class="message received">
+            <div class="message-content">
+              ¡Hola! Soy Juan, tu asesor personal. ¿En qué puedo ayudarte con tu
+              cotización?
+            </div>
+            <div class="message-time">10:30 AM</div>
+          </div>
+
+          <!-- Ejemplo de producto compartido -->
+          <div class="message received">
+            <div class="message-content">
+              Te recomiendo este procesador para tu build:
+              <div class="product-card">
+                <img
+                  src="processor.jpg"
+                  alt="Processor"
+                  class="product-image"
+                />
+                <div class="product-details">
+                  <div class="product-name">Intel Core i7-12700K</div>
+                  <div class="product-price">$399.99</div>
+                </div>
+              </div>
+            </div>
+            <div class="message-time">10:32 AM</div>
+          </div>
+
+          <!-- Mensaje del usuario -->
+          <div class="message sent">
+            <div class="message-content">
+              Gracias, ¿qué tarjeta madre me recomiendas que sea compatible?
+            </div>
+            <div class="message-time">10:33 AM</div>
+          </div>
+        </div>
+        <div class="chat-input">
+          <form id="chatForm">
+            <input
+              type="text"
+              placeholder="Escribe tu mensaje..."
+              id="messageInput"
+            />
+            <button type="submit">
+              <i class="fas fa-paper-plane"></i> Enviar
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Función para agregar mensajes al chat
-        function addMessage(message, isSent = true) {
-            const chatMessages = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isSent ? 'sent' : 'received'}`;
-            
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
+      // Función para agregar mensajes al chat
+      function addMessage(message, isSent = true) {
+        const chatMessages = document.getElementById("chatMessages");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${isSent ? "sent" : "received"}`;
+
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        messageDiv.innerHTML = `
                 <div class="message-content">
                     ${message}
                 </div>
                 <div class="message-time">${timeStr}</div>
             `;
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
 
-        // Manejar envío de mensajes
-        document.getElementById('chatForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                addMessage(message);
-                input.value = '';
-                
-                // Simular respuesta del asesor después de 1 segundo
-                setTimeout(() => {
-                    addMessage('Gracias por tu mensaje. En un momento te ayudo con eso.', false);
-                }, 1000);
-            }
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Manejar envío de mensajes
+      document
+        .getElementById("chatForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const input = document.getElementById("messageInput");
+          const message = input.value.trim();
+
+          if (message) {
+            addMessage(message);
+            input.value = "";
+
+            // Simular respuesta del asesor después de 1 segundo
+            setTimeout(() => {
+              addMessage(
+                "Gracias por tu mensaje. En un momento te ayudo con eso.",
+                false
+              );
+            }, 1000);
+          }
         });
     </script>
-</body>
+  </body>
 </html>
