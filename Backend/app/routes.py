@@ -336,4 +336,22 @@ def upload_image():
         # Devolver la URL de la imagen
         image_url = f'/static/images/productos/{unique_filename}'
         return jsonify({'url': image_url}), 200
+
+
+# Obtener el nombre completo de un usuario
+@main.route('/usuario/<int:usuario_id>', methods=['GET'])
+def obtener_nombre_usuario(usuario_id):
+    try:
+        # Buscar al usuario por su ID
+        usuario = Usuario.query.get(usuario_id)
+
+        # Si el usuario no existe, devolver un error
+        if not usuario:
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        # Devolver el nombre completo del usuario
+        return jsonify({"nombre_completo": usuario.nombre_completo}), 200
+    except Exception as e:
+        return jsonify({"error": f"Error al obtener el nombre del usuario: {e}"}), 500
+
     

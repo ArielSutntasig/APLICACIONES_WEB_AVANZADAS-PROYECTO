@@ -265,15 +265,11 @@
   <body>
     <!-- Loading Spinner -->
     <div class="loading-overlay" id="loadingOverlay">
-      <div
-        id="loadingSpinner"
-        class="spinner-border text-primary"
-        role="status"
-      >
+      <div id="loadingSpinner" class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Cargando...</span>
       </div>
     </div>
-
+  
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
       <div class="container">
@@ -298,16 +294,21 @@
               <a class="nav-link" href="#contacto">Contacto</a>
             </li>
           </ul>
-
+  
           <div class="d-flex align-items-center">
-            <a
-              href="Cart.html"
-              class="btn btn-outline-primary me-2 position-relative"
-            >
+            <!-- Contenedor del nombre del usuario -->
+            <span id="userNameDisplay" class="me-3 d-none">
+              <i class="fas fa-user"></i>
+              <span id="userName"></span>
+            </span>
+          
+            <a href="Cart.html" class="btn btn-outline-primary me-2 position-relative">
               <i class="fas fa-shopping-cart"></i>
               <span class="cart-count" id="cartCount">0</span>
             </a>
+          
             <div id="userContainer">
+              <!-- Botón de Iniciar Sesión por defecto -->
               <a href="login.html" class="btn btn-primary" id="loginButton">
                 <i class="fas fa-user"></i> Iniciar Sesión
               </a>
@@ -413,34 +414,44 @@
 
       // Función para verificar el estado de login
       function checkLoginStatus() {
-        const userId = localStorage.getItem("usuario_id");
-        const nombreUsuario = localStorage.getItem("nombre_completo");
+    const userId = localStorage.getItem("usuario_id");
+    const nombreUsuario = localStorage.getItem("nombre_completo");
 
-        if (userId && nombreUsuario) {
-          document.getElementById("userContainer").innerHTML = `
+    if (userId && nombreUsuario) {
+        // Usuario logueado, mostrar el botón de Cerrar Sesión
+        document.getElementById("userContainer").innerHTML = `
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" 
                         id="userDropdown" data-bs-toggle="dropdown">
                     <i class="fas fa-user"></i> ${nombreUsuario}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="login.html">Mi Perfil</a></li>
+                    <li><a class="dropdown-item" href="profile.html">Mi Perfil</a></li>
                     <li><a class="dropdown-item" href="Cart.html">Mis Pedidos</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#" onclick="logout()">Cerrar Sesión</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="logout()" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </a></li>
                 </ul>
             </div>
         `;
-          actualizarContadorCarrito(userId);
-        }
-      }
+    } else {
+        // Usuario logueado, mostrar el botón de Cerrar Sesión
+        document.getElementById("userContainer").innerHTML = `
+            <a href="login.html" class="btn btn-primary" id="loginButton">
+                <i class="fas fa-user"></i> Cerrar Sesión
+            </a>
+        `;
+    }
+}
+
 
       // Función para cerrar sesión
       function logout() {
-        localStorage.removeItem("usuario_id");
-        localStorage.removeItem("nombre_completo");
-        window.location.href = "login.html";
-      }
+      localStorage.removeItem("usuario_id");
+      localStorage.removeItem("nombre_completo");
+      window.location.href = "login.html";
+     }
 
       // Función para actualizar el contador del carrito
       async function actualizarContadorCarrito(userId) {
@@ -652,6 +663,40 @@
         renderProducts();
       }
 
+      //Funcion para obtener nombre de usuario
+      async function obtenerNombreUsuario(usuarioId) {
+    try {
+        const response = await fetch(`${API_URL}/usuario/${usuarioId}`);
+        if (response.ok) {
+            const data = await response.json();
+            return data.nombre_completo;
+        } else {
+            console.error("Error al obtener el usuario:", response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error de red:", error);
+        return null;
+    }
+}
+
+
+    // Función para inicializar la interfaz
+    async function inicializarUsuario() {
+    const usuarioId = localStorage.getItem("usuario_id");
+    if (usuarioId) {
+        const nombreUsuario = await obtenerNombreUsuario(usuarioId);
+        if (nombreUsuario) {
+            // Mostrar el nombre del usuario en el navbar
+            document.getElementById("userNameDisplay").classList.remove("d-none");
+            document.getElementById("userName").textContent = nombreUsuario;
+        }
+    }
+    checkLoginStatus();  // Verificar el estado de inicio de sesión y actualizar el botón correspondiente
+}
+
+
+
       // Event listeners
       document
         .getElementById("searchInput")
@@ -674,6 +719,7 @@
       document.addEventListener("DOMContentLoaded", () => {
         checkLoginStatus();
         loadProducts();
+        inicializarUsuario();
       });
 
       // Función para manejar el scroll suave a las categorías
