@@ -1,238 +1,746 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TechShop - Home</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- SweetAlert2 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+      rel="stylesheet"
+    />
     <style>
-        .navbar {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+      :root {
+        --primary-color: #1976d2;
+        --secondary-color: #1565c0;
+        --accent-color: #28a745;
+        --background-color: #f8f9fa;
+        --text-color: #333;
+        --light-gray: #6c757d;
+      }
 
-        .nav-link {
-            color: #333;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
 
+      .navbar {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-link {
+        color: var(--text-color);
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: var(--primary-color);
+      }
+
+      .banner {
+        background: linear-gradient(45deg, #1a237e, #0d47a1);
+        color: white;
+        padding: 3rem;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .banner-content {
+        position: relative;
+        z-index: 2;
+        max-width: 600px;
+      }
+
+      .banner h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .category-icons {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+
+      .category-item {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        text-align: center;
+        text-decoration: none;
+        color: var(--text-color);
+        width: 140px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .category-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .category-item i {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 0.75rem;
+      }
+
+      .product-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        height: 100%;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+
+      .product-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .product-price {
+        color: var(--primary-color);
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .btn-add-cart {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 8px;
+        margin-top: auto;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-add-cart:hover {
+        background-color: var(--secondary-color);
+      }
+
+      .btn-add-cart:disabled {
+        background-color: var(--light-gray);
+      }
+
+      .offer-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: var(--accent-color);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+      }
+
+      .stock-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+      }
+
+      .search-container {
+        position: relative;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        padding-right: 3rem;
+        border: 1px solid #ddd;
+        border-radius: 25px;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .search-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--primary-color);
+      }
+
+      .search-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--primary-color);
+        cursor: pointer;
+      }
+
+      .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--accent-color);
+        color: white;
+        border-radius: 50%;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: bold;
+      }
+
+      #loadingSpinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        display: none;
+      }
+
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 999;
+        display: none;
+      }
+
+      @media (max-width: 768px) {
         .banner {
-            background: linear-gradient(45deg, #000, #333);
-            color: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
+          padding: 2rem;
         }
 
-        .banner img {
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.7;
-        }
-
-        .banner-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .category-icons {
-            display: flex;
-            justify-content: space-around;
-            margin: 2rem 0;
-            flex-wrap: wrap;
+        .banner h2 {
+          font-size: 2rem;
         }
 
         .category-item {
-            text-align: center;
-            padding: 1rem;
-            text-decoration: none;
-            color: #333;
-        }
-
-        .category-item i {
-            font-size: 2rem;
-            color: #1976d2;
-            margin-bottom: 0.5rem;
+          width: calc(50% - 1rem);
         }
 
         .product-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            transition: transform 0.2s;
+          margin-bottom: 1rem;
         }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .price {
-            color: #1976d2;
-            font-weight: bold;
-        }
-
-        .offer-badge {
-            background-color: #28a745;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-
-        .btn-add-cart {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            width: 100%;
-        }
-
-        .btn-add-cart:hover {
-            background-color: #1565c0;
-        }
+      }
     </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">TechShop</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Categorías</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Marcas</a>
-                    </li>
-                </ul>
-                <form class="d-flex me-3">
-                    <input class="form-control me-2" type="search" placeholder="Buscar artículos">
-                    <button class="btn btn-outline-primary" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-                <div class="d-flex">
-                    <a href="cart.html" class="btn btn-outline-primary me-2">
-                        <i class="fas fa-shopping-cart"></i>
-                    </a>
-                    <a href="login.html" class="btn btn-primary">
-                        <i class="fas fa-user"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Banner de cotización -->
-    <div class="container mt-4">
-        <div class="banner">
-            <div class="banner-content">
-                <h2>COTIZA TÚ MISMO</h2>
-                <p>TAN SIMPLE COMO SELECCIONAR LOS COMPONENTES PARA TU ENSAMBLE PREFERIDO</p>
-                <a href="chat.html" class="btn btn-light">
-                    <i class="fas fa-calculator"></i> CLICK HERE
-                </a>
-            </div>
-            <img src="pc-components.jpg" alt="PC Components">
-        </div>
+  </head>
+  <body>
+    <!-- Loading Spinner -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div
+        id="loadingSpinner"
+        class="spinner-border text-primary"
+        role="status"
+      >
+        <span class="visually-hidden">Cargando...</span>
+      </div>
     </div>
 
-    <!-- Iconos de categorías -->
-    <div class="container">
-        <div class="category-icons">
-            <a href="#" class="category-item">
-                <i class="fas fa-desktop"></i>
-                <p>PC COMPLETA</p>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="home.html">TechShop</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="home.html">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#productos">Productos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contacto">Contacto</a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-center">
+            <a
+              href="Cart.html"
+              class="btn btn-outline-primary me-2 position-relative"
+            >
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count" id="cartCount">0</span>
             </a>
-            <a href="#" class="category-item">
-                <i class="fas fa-microchip"></i>
-                <p>COMPONENTES</p>
-            </a>
-            <a href="#" class="category-item">
-                <i class="fas fa-keyboard"></i>
-                <p>PERIFÉRICOS</p>
-            </a>
-            <a href="#" class="category-item">
-                <i class="fas fa-laptop"></i>
-                <p>LAPTOPS</p>
-            </a>
-            <a href="#" class="category-item">
-                <i class="fas fa-headset"></i>
-                <p>AUDIO</p>
-            </a>
-            <a href="#" class="category-item">
-                <i class="fas fa-mobile-alt"></i>
-                <p>CELULARES</p>
-            </a>
-            <a href="#" class="category-item">
-                <i class="fas fa-gamepad"></i>
-                <p>GAMING</p>
-            </a>
+            <div id="userContainer">
+              <a href="login.html" class="btn btn-primary" id="loginButton">
+                <i class="fas fa-user"></i> Iniciar Sesión
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
+    </nav>
+
+    <!-- Banner -->
+    <div class="container mt-4">
+      <div class="banner">
+        <div class="banner-content">
+          <h2>COTIZA TÚ MISMO</h2>
+          <p>SELECCIONA LOS COMPONENTES PARA TU ENSAMBLE PREFERIDO</p>
+          <a href="Chat.html" class="btn btn-light btn-lg">
+            <i class="fas fa-calculator me-2"></i>COTIZAR AHORA
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categorías -->
+    <div class="container">
+      <div class="category-icons">
+        <a href="#pc" class="category-item">
+          <i class="fas fa-desktop"></i>
+          <p>PC COMPLETA</p>
+        </a>
+        <a href="#componentes" class="category-item">
+          <i class="fas fa-microchip"></i>
+          <p>COMPONENTES</p>
+        </a>
+        <a href="#perifericos" class="category-item">
+          <i class="fas fa-keyboard"></i>
+          <p>PERIFÉRICOS</p>
+        </a>
+        <a href="#laptops" class="category-item">
+          <i class="fas fa-laptop"></i>
+          <p>LAPTOPS</p>
+        </a>
+        <a href="#audio" class="category-item">
+          <i class="fas fa-headset"></i>
+          <p>AUDIO</p>
+        </a>
+        <a href="#celulares" class="category-item">
+          <i class="fas fa-mobile-alt"></i>
+          <p>CELULARES</p>
+        </a>
+        <a href="#gaming" class="category-item">
+          <i class="fas fa-gamepad"></i>
+          <p>GAMING</p>
+        </a>
+      </div>
     </div>
 
     <!-- Productos -->
-    <div class="container" id="productosContainer">
-        <h3 class="mb-4">TIENDA DE COMPUTADORAS Y ACCESORIOS</h3>
-        <div class="row">
-            <!-- Producto 1 -->
-            <div class="col-md-3">
-                <div class="product-card">
-                    <img src="kingston-ssd.jpg" class="img-fluid mb-3" alt="Kingston SSD">
-                    <span class="offer-badge">OFERTA</span>
-                    <h5>Disco sólido SSD M.2 NVMe Kingston 500GB</h5>
-                    <p class="price">$54.99</p>
-                    <button class="btn btn-add-cart">Agregar al carrito</button>
-                </div>
-            </div>
-            <!-- Producto 2 -->
-            <div class="col-md-3">
-                <div class="product-card">
-                    <img src="mouse.jpg" class="img-fluid mb-3" alt="Logitech Mouse">
-                    <h5>Mouse Logitech G305 Wireless</h5>
-                    <p class="price">$40.00</p>
-                    <button class="btn btn-add-cart">Agregar al carrito</button>
-                </div>
-            </div>
-            <!-- Producto 3 -->
-            <div class="col-md-3">
-                <div class="product-card">
-                    <img src="hub.jpg" class="img-fluid mb-3" alt="Hub">
-                    <span class="offer-badge">OFERTA</span>
-                    <h5>Hub Controladora PWM + ARGB</h5>
-                    <p class="price">$19.99</p>
-                    <button class="btn btn-add-cart">Agregar al carrito</button>
-                </div>
-            </div>
-            <!-- Producto 4 -->
-            <div class="col-md-3">
-                <div class="product-card">
-                    <img src="soporte.jpg" class="img-fluid mb-3" alt="Soporte">
-                    <h5>Soporte Brazo Gamer para 2 monitores</h5>
-                    <p class="price">$75.00</p>
-                    <button class="btn btn-add-cart">Agregar al carrito</button>
-                </div>
-            </div>
+    <div class="container" id="productos">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>PRODUCTOS DESTACADOS</h3>
+        <div class="search-container">
+          <input
+            type="text"
+            class="search-input"
+            id="searchInput"
+            placeholder="Buscar productos..."
+          />
+          <button class="search-btn" onclick="searchProducts()">
+            <i class="fas fa-search"></i>
+          </button>
         </div>
+      </div>
+
+      <div class="row" id="productosContainer">
+        <!-- Los productos se cargarán dinámicamente aquí -->
+      </div>
     </div>
 
-    
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap y otros scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      // Variables globales
+      let productos = [];
+      let productosOriginal = [];
+      const API_URL = "http://localhost:5000";
+
+      function navigateToPage(page) {
+        window.location.href = page;
+      }
+
+      // Funciones de utilidad
+      function showLoading() {
+        document.getElementById("loadingOverlay").style.display = "flex";
+        document.getElementById("loadingSpinner").style.display = "block";
+      }
+
+      function hideLoading() {
+        document.getElementById("loadingOverlay").style.display = "none";
+        document.getElementById("loadingSpinner").style.display = "none";
+      }
+
+      // Función para verificar el estado de login
+      function checkLoginStatus() {
+        const userId = localStorage.getItem("usuario_id");
+        const nombreUsuario = localStorage.getItem("nombre_completo");
+
+        if (userId && nombreUsuario) {
+          document.getElementById("userContainer").innerHTML = `
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" 
+                        id="userDropdown" data-bs-toggle="dropdown">
+                    <i class="fas fa-user"></i> ${nombreUsuario}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="login.html">Mi Perfil</a></li>
+                    <li><a class="dropdown-item" href="Cart.html">Mis Pedidos</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" onclick="logout()">Cerrar Sesión</a></li>
+                </ul>
+            </div>
+        `;
+          actualizarContadorCarrito(userId);
+        }
+      }
+
+      // Función para cerrar sesión
+      function logout() {
+        localStorage.removeItem("usuario_id");
+        localStorage.removeItem("nombre_completo");
+        window.location.href = "login.html";
+      }
+
+      // Función para actualizar el contador del carrito
+      async function actualizarContadorCarrito(userId) {
+    try {
+        console.log('Actualizando contador para usuario:', userId);
+        const response = await fetch(`${API_URL}/carrito/${userId}`);
+        
+        if (!response.ok) {
+            throw new Error('Error al obtener carrito');
+        }
+        
+        const items = await response.json();
+        console.log('Items en carrito:', items);
+        
+        const count = items.reduce((total, item) => total + item.cantidad, 0);
+        console.log('Cantidad total:', count);
+        
+        document.getElementById('cartCount').textContent = count;
+    } catch (error) {
+        console.error('Error al actualizar carrito:', error);
+    }
+}
+
+      // Función para cargar productos
+      async function loadProducts() {
+        showLoading();
+        try {
+          const response = await fetch(`${API_URL}/productos`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          console.log("Intentando obtener productos...");
+          const data = await response.json();
+          console.log("Datos recibidos:", data);
+
+          if (Array.isArray(data)) {
+            productosOriginal = data.map((producto) => ({
+              ...producto,
+              imagen_url: producto.imagen_url
+                ? producto.imagen_url.startsWith("http")
+                  ? producto.imagen_url
+                  : `${API_URL}${producto.imagen_url}`
+                : "/static/images/default-product.jpg",
+            }));
+            productos = [...productosOriginal];
+            renderProducts();
+          } else {
+            throw new Error("El formato de datos no es válido");
+          }
+        } catch (error) {
+          console.error("Error al cargar productos:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error al cargar productos",
+            text: "No se pudieron cargar los productos. Por favor, intenta nuevamente.",
+          });
+          document.getElementById("productosContainer").innerHTML = `
+            <div class="col-12 text-center">
+                <p class="text-danger">Error al cargar los productos. Por favor, recarga la página.</p>
+            </div>
+        `;
+        } finally {
+          hideLoading();
+        }
+      }
+
+      // Para subir una nueva imagen de producto
+      async function uploadProductImage(file) {
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+          const response = await fetch(`${API_URL}/upload-image`, {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) throw new Error("Error al subir imagen");
+
+          const data = await response.json();
+          return data.url; // URL de la imagen guardada
+        } catch (error) {
+          console.error("Error:", error);
+          throw error;
+        }
+      }
+
+      // Función para renderizar productos
+      function renderProducts() {
+        const container = document.getElementById("productosContainer");
+
+        if (!productos || productos.length === 0) {
+          container.innerHTML = `
+            <div class="col-12 text-center">
+                <p>No hay productos disponibles en este momento.</p>
+            </div>
+        `;
+          return;
+        }
+
+        container.innerHTML = productos
+          .map(
+            (producto) => `
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="product-card">
+                ${
+                  producto.en_oferta
+                    ? '<span class="offer-badge">OFERTA</span>'
+                    : ""
+                }
+                <span class="stock-badge">Stock: ${producto.stock}</span>
+                <img src="${producto.imagen_url}" 
+                     class="product-image" 
+                     alt="${producto.nombre}"
+                     onerror="this.src='/static/images/default-product.jpg'">
+                <h5 class="product-title">${producto.nombre}</h5>
+                <p class="product-price">$${parseFloat(producto.precio).toFixed(
+                  2
+                )}</p>
+                <button class="btn btn-add-cart" 
+                        onclick="addToCart(${producto.id}, ${producto.precio})"
+                        ${producto.stock <= 0 ? "disabled" : ""}>
+                    ${producto.stock > 0 ? "Agregar al carrito" : "Sin stock"}
+                </button>
+            </div>
+        </div>
+    `
+          )
+          .join("");
+      }
+      // Función para agregar al carrito
+      async function addToCart(productoId, precio) {
+    const userId = localStorage.getItem('usuario_id');
+    console.log('Intentando agregar al carrito:', { productoId, precio, userId });
+
+    if (!userId) {
+        Swal.fire({
+            title: 'Iniciar sesión',
+            text: 'Necesitas iniciar sesión para agregar productos al carrito',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Ir a login',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'login.html';
+            }
+        });
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/carrito`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                usuario_id: parseInt(userId),
+                producto_id: productoId,
+                cantidad: 1,
+                precio_unitario: parseFloat(precio)
+            })
+        });
+
+        console.log('Respuesta del servidor:', response.status);
+        const data = await response.json();
+        console.log('Datos de respuesta:', data);
+
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: 'Producto agregado al carrito',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            await actualizarContadorCarrito(userId);
+        } else {
+            throw new Error(data.error || 'Error al agregar al carrito');
+        }
+    } catch (error) {
+        console.error('Error completo:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo agregar el producto al carrito'
+        });
+    }
+}
+
+      // Función para buscar productos
+      function searchProducts() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        if (searchTerm === "") {
+          productos = [...productosOriginal];
+        } else {
+          productos = productosOriginal.filter((producto) =>
+            producto.nombre.toLowerCase().includes(searchTerm)
+          );
+        }
+        renderProducts();
+      }
+
+      // Event listeners
+      document
+        .getElementById("searchInput")
+        .addEventListener("keyup", function (event) {
+          if (event.key === "Enter") {
+            searchProducts();
+          }
+        });
+
+      // Debounce para la búsqueda
+      let searchTimeout;
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", function () {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(searchProducts, 300);
+        });
+
+      // Inicialización
+      document.addEventListener("DOMContentLoaded", () => {
+        checkLoginStatus();
+        loadProducts();
+      });
+
+      // Función para manejar el scroll suave a las categorías
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href");
+          if (targetId === "#") return;
+
+          const target = document.querySelector(targetId);
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Observador de intersección para animaciones al hacer scroll
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("show");
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+        }
+      );
+
+      document.querySelectorAll(".product-card").forEach((card) => {
+        observer.observe(card);
+      });
+
+      // Función para mostrar notificaciones
+      function showNotification(message, type = "info") {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: type,
+          title: message,
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        });
+      }
+
+      // Manejo de errores global
+      window.onerror = function (msg, url, lineNo, columnNo, error) {
+        console.error(
+          "Error: ",
+          msg,
+          "URL: ",
+          url,
+          "Line: ",
+          lineNo,
+          "Column: ",
+          columnNo,
+          "Error object: ",
+          error
+        );
+        showNotification(
+          "Ha ocurrido un error. Por favor, intenta nuevamente.",
+          "error"
+        );
+        hideLoading();
+        return false;
+      };
+    </script>
+  </body>
 </html>

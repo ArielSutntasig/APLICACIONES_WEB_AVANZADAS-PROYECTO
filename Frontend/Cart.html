@@ -1,323 +1,483 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TechShop - Carrito de Compras</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #f0f2f5;
-            min-height: 100vh;
-        }
+      body {
+        background-color: #f0f2f5;
+        min-height: 100vh;
+      }
 
-        .navbar {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+      .navbar {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-        .cart-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
+      .cart-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
 
-        .cart-title {
-            color: #1976d2;
-            margin-bottom: 1.5rem;
-        }
+      .cart-title {
+        color: #1976d2;
+        margin-bottom: 1.5rem;
+      }
 
-        .cart-item {
-            background: white;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+      .cart-item {
+        background: white;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
 
-        .cart-item img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
+      .cart-item img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
 
-        .item-details {
-            flex: 1;
-        }
+      .item-details {
+        flex: 1;
+      }
 
-        .item-title {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
+      .item-title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
 
-        .item-price {
-            color: #1976d2;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
+      .item-price {
+        color: #1976d2;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
 
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-        .quantity-btn {
-            background: #f8f9fa;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+      .quantity-btn {
+        background: #f8f9fa;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
 
-        .quantity-btn:hover {
-            background: #e9ecef;
-        }
+      .quantity-btn:hover {
+        background: #e9ecef;
+      }
 
-        .quantity-input {
-            width: 50px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 0.25rem;
-        }
+      .quantity-input {
+        width: 50px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.25rem;
+      }
 
-        .remove-btn {
-            color: #dc3545;
-            cursor: pointer;
-            padding: 0.5rem;
-            transition: color 0.2s;
-        }
+      .remove-btn {
+        color: #dc3545;
+        cursor: pointer;
+        padding: 0.5rem;
+        transition: color 0.2s;
+      }
 
-        .remove-btn:hover {
-            color: #bd2130;
-        }
+      .remove-btn:hover {
+        color: #bd2130;
+      }
 
-        .cart-summary {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+      .cart-summary {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
+      .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
 
-        .total {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #1976d2;
-            border-top: 2px solid #f0f2f5;
-            padding-top: 1rem;
-        }
+      .total {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #1976d2;
+        border-top: 2px solid #f0f2f5;
+        padding-top: 1rem;
+      }
 
-        .checkout-btn {
-            background: #1976d2;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 1rem;
-            border-radius: 8px;
-            font-weight: bold;
-            margin-top: 1rem;
-            transition: background-color 0.2s;
-        }
+      .checkout-btn {
+        background: #1976d2;
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: bold;
+        margin-top: 1rem;
+        transition: background-color 0.2s;
+      }
 
-        .checkout-btn:hover {
-            background: #1565c0;
-        }
+      .checkout-btn:hover {
+        background: #1565c0;
+      }
 
-        .empty-cart {
-            text-align: center;
-            padding: 3rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+      .empty-cart {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-        .empty-cart i {
-            font-size: 4rem;
-            color: #1976d2;
-            margin-bottom: 1rem;
-        }
+      .empty-cart i {
+        font-size: 4rem;
+        color: #1976d2;
+        margin-bottom: 1rem;
+      }
 
-        .continue-shopping {
-            color: #1976d2;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
+      .continue-shopping {
+        color: #1976d2;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
 
-        .continue-shopping:hover {
-            text-decoration: underline;
-        }
+      .continue-shopping:hover {
+        text-decoration: underline;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="home.html">TechShop</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="home.html">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Categorías</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Marcas</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="home.html">TechShop</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="home.html">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Categorías</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Marcas</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- Cart Container -->
     <div class="cart-container">
-        <h2 class="cart-title">Carrito de Compras</h2>
+      <h2 class="cart-title">Carrito de Compras</h2>
 
-        <!-- Si hay items en el carrito -->
-        <div class="row" id="cartContent">
-            <div class="col-lg-8">
-                <!-- Cart Items -->
-                <div class="cart-item">
-                    <img src="ssd.jpg" alt="Kingston SSD">
-                    <div class="item-details">
-                        <div class="item-title">Disco sólido SSD M.2 NVMe Kingston 500GB</div>
-                        <div class="item-price">$54.99</div>
-                    </div>
-                    <div class="quantity-controls">
-                        <button class="quantity-btn" onclick="updateQuantity(1, -1)">-</button>
-                        <input type="number" class="quantity-input" value="1" min="1" max="99">
-                        <button class="quantity-btn" onclick="updateQuantity(1, 1)">+</button>
-                    </div>
-                    <div class="remove-btn" onclick="removeItem(1)">
-                        <i class="fas fa-trash"></i>
-                    </div>
-                </div>
-
-                <div class="cart-item">
-                    <img src="mouse.jpg" alt="Logitech Mouse">
-                    <div class="item-details">
-                        <div class="item-title">Mouse Logitech G305 Wireless</div>
-                        <div class="item-price">$40.00</div>
-                    </div>
-                    <div class="quantity-controls">
-                        <button class="quantity-btn" onclick="updateQuantity(2, -1)">-</button>
-                        <input type="number" class="quantity-input" value="1" min="1" max="99">
-                        <button class="quantity-btn" onclick="updateQuantity(2, 1)">+</button>
-                    </div>
-                    <div class="remove-btn" onclick="removeItem(2)">
-                        <i class="fas fa-trash"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <!-- Cart Summary -->
-                <div class="cart-summary">
-                    <h4 class="mb-4">Resumen de compra</h4>
-                    <div class="summary-item">
-                        <span>Subtotal</span>
-                        <span>$94.99</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Envío</span>
-                        <span>$5.00</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>IVA (12%)</span>
-                        <span>$11.40</span>
-                    </div>
-                    <div class="summary-item total">
-                        <span>Total</span>
-                        <span>$111.39</span>
-                    </div>
-                    <button class="checkout-btn">
-                        PROCEDER AL PAGO
-                    </button>
-                </div>
-            </div>
+      <!-- Si hay items en el carrito -->
+      <div class="row" id="cartContent">
+        <div class="col-lg-8" id="cartItemsContainer">
+          <!-- Los items del carrito se insertarán aquí dinámicamente -->
         </div>
 
-        <!-- Si el carrito está vacío -->
-        <div class="empty-cart" style="display: none;" id="emptyCart">
-            <i class="fas fa-shopping-cart"></i>
-            <h3>Tu carrito está vacío</h3>
-            <p>¡Agrega algunos productos para comenzar!</p>
-            <a href="home.html" class="continue-shopping">
-                <i class="fas fa-arrow-left"></i>
-                Continuar comprando
-            </a>
+        <div class="col-lg-4">
+          <div class="cart-summary">
+            <h4 class="mb-4">Resumen de compra</h4>
+            <div class="summary-item">
+              <span>Subtotal</span>
+              <span id="subtotalAmount">$0.00</span>
+            </div>
+            <div class="summary-item">
+              <span>Envío</span>
+              <span id="shippingAmount">$0.00</span>
+            </div>
+            <div class="summary-item">
+              <span>IVA (12%)</span>
+              <span id="ivaAmount">$0.00</span>
+            </div>
+            <div class="summary-item total">
+              <span>Total</span>
+              <span id="totalAmount">$0.00</span>
+            </div>
+            <button class="checkout-btn">Confirmar compra</button>
+          </div>
         </div>
+      </div>
+
+      <!-- Si el carrito está vacío -->
+      <div class="empty-cart" style="display: none" id="emptyCart">
+        <i class="fas fa-shopping-cart"></i>
+        <h3>Tu carrito está vacío</h3>
+        <p>¡Agrega algunos productos para comenzar!</p>
+        <a href="home.html" class="continue-shopping">
+          <i class="fas fa-arrow-left"></i>
+          Continuar comprando
+        </a>
+      </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function updateQuantity(itemId, change) {
-            const input = event.target.parentElement.querySelector('.quantity-input');
-            let newValue = parseInt(input.value) + change;
-            if (newValue >= 1 && newValue <= 99) {
-                input.value = newValue;
-                updateTotal();
+      const API_URL = "http://localhost:5000"; // Ajusta según tu configuración de servidor
+
+      let cartItems = [];
+      const SHIPPING_COST = 5.0;
+      const IVA_RATE = 0.12;
+
+      async function loadCartItems() {
+    const userId = localStorage.getItem("usuario_id");
+    console.log("Cargando items para usuario:", userId);
+
+    if (!userId) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/carrito/${userId}`);
+        console.log("Respuesta del servidor:", response.status);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Datos recibidos:", data);
+
+        if (Array.isArray(data)) {
+            cartItems = data;
+            console.log("Items cargados:", cartItems.length);
+            renderCart();
+        } else {
+            throw new Error('Formato de datos inválido');
+        }
+    } catch (error) {
+        console.error("Error al cargar el carrito:", error);
+        showEmptyCart();
+    }
+}
+
+
+      function showEmptyCart() {
+        document.getElementById("cartContent").style.display = "none";
+        document.getElementById("emptyCart").style.display = "block";
+        // Limpiar los montos del resumen
+        document.getElementById("subtotalAmount").textContent = "$0.00";
+        document.getElementById("shippingAmount").textContent = "$0.00";
+        document.getElementById("ivaAmount").textContent = "$0.00";
+        document.getElementById("totalAmount").textContent = "$0.00";
+      }
+
+      async function updateQuantity(itemId, change, newValue = null) {
+        const item = cartItems.find((i) => i.id === itemId);
+        if (!item) return;
+
+        let updatedQuantity;
+        if (newValue !== null) {
+          updatedQuantity = parseInt(newValue);
+        } else {
+          updatedQuantity = item.cantidad + change;
+        }
+
+        if (updatedQuantity < 1 || updatedQuantity > 99) return;
+
+        try {
+          const response = await fetch(`${API_URL}/carrito/actualizar`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              item_id: itemId,
+              cantidad: updatedQuantity,
+            }),
+          });
+
+          if (response.ok) {
+            item.cantidad = updatedQuantity;
+            item.subtotal = item.precio_unitario * updatedQuantity;
+            renderCart();
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Error al actualizar la cantidad");
+        }
+      }
+
+      async function removeItem(itemId) {
+        if (!confirm("¿Estás seguro de que deseas eliminar este producto?"))
+          return;
+
+        try {
+          const response = await fetch(
+            `${API_URL}/carrito/eliminar/${itemId}`,
+            {
+              method: "DELETE",
             }
+          );
+
+          if (response.ok) {
+            cartItems = cartItems.filter((item) => item.id !== itemId);
+            renderCart();
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Error al eliminar el producto");
         }
+      }
 
-        function removeItem(itemId) {
-            const item = event.target.closest('.cart-item');
-            item.remove();
-            updateTotal();
-            checkEmptyCart();
-        }
+      function updateSummary() {
+    const subtotal = cartItems.reduce((sum, item) => {
+        return sum + (item.precio_unitario * item.cantidad);
+    }, 0);
+    
+    console.log("Subtotal calculado:", subtotal);
+    const iva = subtotal * IVA_RATE;
+    const total = subtotal + iva + SHIPPING_COST;
 
-        function updateTotal() {
-            // Aquí irá la lógica para actualizar los totales
-            console.log('Actualizando totales...');
-        }
+    document.getElementById("subtotalAmount").textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById("shippingAmount").textContent = `$${SHIPPING_COST.toFixed(2)}`;
+    document.getElementById("ivaAmount").textContent = `$${iva.toFixed(2)}`;
+    document.getElementById("totalAmount").textContent = `$${total.toFixed(2)}`;
+}
 
-        function checkEmptyCart() {
-            const items = document.querySelectorAll('.cart-item');
-            const cartContent = document.getElementById('cartContent');
-            const emptyCart = document.getElementById('emptyCart');
+function renderCart() {
+    if (cartItems.length === 0) {
+        showEmptyCart();
+        return;
+    }
 
-            if (items.length === 0) {
-                cartContent.style.display = 'none';
-                emptyCart.style.display = 'block';
-            }
-        }
+    const cartContainer = document.getElementById("cartItemsContainer");
+    cartContainer.innerHTML = cartItems
+        .map(item => {
+            // Construye la URL completa de la imagen
+            const imageUrl = item.imagen.startsWith('http') 
+                ? item.imagen 
+                : `${API_URL}${item.imagen}`;
+            
+            return `
+                <div class="cart-item" data-producto-id="${item.producto_id}">
+                    <img src="${imageUrl}" 
+                         alt="${item.producto}"
+                         onerror="this.src='${API_URL}/static/images/default-product.jpg'">
+                    <div class="item-details">
+                        <div class="item-title">${item.producto}</div>
+                        <div class="item-price">$${item.precio_unitario.toFixed(2)}</div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <input type="number" class="quantity-input" value="${item.cantidad}" 
+                               min="1" max="99" onchange="updateQuantity(${item.id}, 0, this.value)">
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                    </div>
+                    <div class="remove-btn" onclick="removeItem(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                </div>
+            `;
+        }).join("");
 
-        // Manejar cambios directos en los inputs de cantidad
-        document.querySelectorAll('.quantity-input').forEach(input => {
-            input.addEventListener('change', function() {
-                let value = parseInt(this.value);
-                if (value < 1) this.value = 1;
-                if (value > 99) this.value = 99;
-                updateTotal();
+    document.getElementById("cartContent").style.display = "flex";
+    document.getElementById("emptyCart").style.display = "none";
+    updateSummary();
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("Iniciando carga del carrito...");
+    const userId = localStorage.getItem("usuario_id");
+    console.log("ID de usuario:", userId);
+    
+    if (!userId) {
+        console.log("No hay usuario logueado");
+        showEmptyCart();
+        return;
+    }
+    await loadCartItems();
+});
+
+      document
+        .querySelector(".checkout-btn")
+        .addEventListener("click", async function () {
+          const userId = localStorage.getItem("usuario_id");
+          if (!userId) {
+            alert("Por favor inicia sesión para continuar");
+            window.location.href = "login.html";
+            return;
+          }
+
+          try {
+            const subtotal = cartItems.reduce(
+              (sum, item) => sum + item.subtotal,
+              0
+            );
+            const iva = subtotal * IVA_RATE;
+            const total = subtotal + iva + SHIPPING_COST;
+
+            const response = await fetch(`${API_URL}/confirmar-compra`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                usuario_id: parseInt(userId),
+                subtotal: subtotal,
+                iva: iva,
+                envio: SHIPPING_COST,
+                total: total,
+                productos: cartItems.map((item) => ({
+                  id: item.producto_id,
+                  cantidad: item.cantidad,
+                  precio_unitario: item.precio_unitario,
+                })),
+              }),
             });
+
+            if (response.ok) {
+              alert("¡Compra realizada con éxito!");
+              window.location.href = "home.html";
+            } else {
+              const error = await response.json();
+              alert(`Error: ${error.error}`);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Error al procesar la compra. Por favor intenta nuevamente.");
+          }
         });
     </script>
-</body>
+  </body>
 </html>

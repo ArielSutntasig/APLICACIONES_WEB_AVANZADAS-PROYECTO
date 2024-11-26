@@ -37,8 +37,31 @@ class Carrito(db.Model):
     estado = db.Column('Estado', db.String(50), nullable=False, default='Pendiente')
     fecha = db.Column('Fecha', db.DateTime, default=db.func.current_timestamp())
 
-    usuario = db.relationship('Usuario', backref='carrito')
-    producto = db.relationship('Producto', backref='carrito')
+    usuario = db.relationship('Usuario', backref=db.backref('carritos', lazy=True))
+    producto = db.relationship('Producto', backref=db.backref('carritos', lazy=True))
 
     def __repr__(self):
         return f"<Carrito Usuario: {self.usuario_id} Producto: {self.producto_id}>"
+    
+# Modelo de Orden
+class Orden(db.Model):
+    __tablename__ = 'Ordenes'
+    id = db.Column('Id', db.Integer, primary_key=True)
+    usuario_id = db.Column('UsuarioId', db.Integer, db.ForeignKey('Usuarios.Id'), nullable=False)
+    subtotal = db.Column('Subtotal', db.Numeric(10, 2), nullable=False)
+    iva = db.Column('IVA', db.Numeric(10, 2), nullable=False)
+    envio = db.Column('Envio', db.Numeric(10, 2), nullable=False)
+    total = db.Column('Total', db.Numeric(10, 2), nullable=False)
+    estado = db.Column('Estado', db.String(50), default='Completada')
+    fecha = db.Column('Fecha', db.DateTime, default=db.func.current_timestamp())
+
+    usuario = db.relationship('Usuario', backref='ordenes')
+    detalles = db.relationship('DetalleOrden', backref='orden', lazy=True)
+
+class DetalleOrden(db.Model):
+    __tablename__ = 'DetallesOrden'
+    id = db.Column('Id', db.Integer, primary_key=True)
+    orden_id = db.Column('OrdenId', db.Integer, db.ForeignKey('Ordenes.Id'), nullable=False)
+    producto_id = db.Column('ProductoId', db.Integer, db.ForeignKey('Productos.Id'), nullable=False)
+    cantidad = db.Column('Cantidad', db.Integer, nullable=False)
+    precio_unitario = db.Column('PrecioUnitario', db.Float, nullable=False)

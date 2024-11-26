@@ -78,10 +78,10 @@
                         <i class="fas fa-user"></i>
                     </span>
                     <input 
-                        type="text"
-                        id="username"
+                        type="email"
+                        id="email"
                         class="form-control"
-                        placeholder="Username"
+                        placeholder="Email"
                         required
                     >
                 </div>
@@ -140,19 +140,33 @@
         }
 
         // Manejo del formulario
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+                document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const username = document.getElementById('username').value;
+        
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
-
-            // Aquí puedes agregar la lógica para procesar el login
-            console.log({
-                username,
-                password,
-                rememberMe
-            });
+        
+            try {
+                const response = await fetch('http://127.0.0.1:5000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+        
+                if (response.ok) {
+                    const result = await response.json();
+                    // Guardamos el ID del usuario en localStorage
+                    localStorage.setItem('usuario_id', result.usuario_id);
+                    localStorage.setItem('nombre_usuario', result.nombre_completo);
+                    alert(`Bienvenido, ${result.nombre_completo}`);
+                    window.location.href = 'home.html';
+                } else {
+                    const error = await response.json();
+                    alert(`Error: ${error.error}`);
+                }
+            } catch (err) {
+                alert('Error al conectar con el servidor. Intenta de nuevo más tarde.');
+            }
         });
     </script>
 </body>

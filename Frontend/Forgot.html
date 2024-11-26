@@ -192,11 +192,11 @@
         }
 
         // Manejo del formulario
-        document.getElementById('resetForm').addEventListener('submit', function(e) {
+                document.getElementById('resetForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             let isValid = true;
             
-            // Validación del email
+            // Email validation
             const email = document.getElementById('email');
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email.value)) {
@@ -205,8 +205,8 @@
             } else {
                 email.classList.remove('is-invalid');
             }
-
-            // Validación de la nueva contraseña
+        
+            // Password validation
             const newPassword = document.getElementById('newPassword');
             const confirmPassword = document.getElementById('confirmPassword');
             
@@ -216,24 +216,36 @@
             } else {
                 newPassword.classList.remove('is-invalid');
             }
-
-            // Validación de confirmación de contraseña
+        
+            // Confirm password validation
             if (newPassword.value !== confirmPassword.value) {
                 confirmPassword.classList.add('is-invalid');
                 isValid = false;
             } else {
                 confirmPassword.classList.remove('is-invalid');
             }
-
+        
             if (isValid) {
-                // Aquí puedes agregar la lógica para procesar el cambio de contraseña
-                console.log({
-                    email: email.value,
-                    newPassword: newPassword.value
-                });
-                // Redirigir al login después de cambiar la contraseña
-                alert('Password reset successful!');
-                window.location.href = 'login.html';
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/reset-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: email.value,
+                            new_password: newPassword.value
+                        })
+                    });
+        
+                    if (response.ok) {
+                        alert('Password reset successful!');
+                        window.location.href = 'login.html';
+                    } else {
+                        const error = await response.json();
+                        alert(`Error: ${error.error}`);
+                    }
+                } catch (err) {
+                    alert('Error connecting to server. Please try again later.');
+                }
             }
         });
 
