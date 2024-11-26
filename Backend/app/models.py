@@ -65,3 +65,16 @@ class DetalleOrden(db.Model):
     producto_id = db.Column('ProductoId', db.Integer, db.ForeignKey('Productos.Id'), nullable=False)
     cantidad = db.Column('Cantidad', db.Integer, nullable=False)
     precio_unitario = db.Column('PrecioUnitario', db.Float, nullable=False)
+    
+# Agregar nuevo modelo para mensajes
+class Mensaje(db.Model):
+    __tablename__ = 'Mensajes'
+    id = db.Column('Id', db.Integer, primary_key=True)
+    emisor_id = db.Column('EmisorId', db.Integer, db.ForeignKey('Usuarios.Id'), nullable=False)
+    receptor_id = db.Column('ReceptorId', db.Integer, db.ForeignKey('Usuarios.Id'), nullable=False)
+    contenido = db.Column('Contenido', db.Text, nullable=False)
+    leido = db.Column('Leido', db.Boolean, default=False)
+    fecha = db.Column('Fecha', db.DateTime, default=db.func.current_timestamp())
+
+    emisor = db.relationship('Usuario', foreign_keys=[emisor_id], backref='mensajes_enviados')
+    receptor = db.relationship('Usuario', foreign_keys=[receptor_id], backref='mensajes_recibidos')

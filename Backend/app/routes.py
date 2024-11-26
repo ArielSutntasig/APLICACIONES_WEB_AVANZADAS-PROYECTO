@@ -355,3 +355,25 @@ def obtener_nombre_usuario(usuario_id):
         return jsonify({"error": f"Error al obtener el nombre del usuario: {e}"}), 500
 
     
+@main.route('/mensajes/<int:usuario_id>', methods=['GET'])
+def obtener_mensajes(usuario_id):
+    try:
+        # Obtener el asesor
+        asesor = Usuario.query.filter_by(email=ASESOR_EMAIL).first()
+        
+        # Obtener mensajes donde el usuario es emisor o receptor
+        mensajes = Mensaje.query.filter(
+            ((Mensaje.emisor_id == usuario_id) & (Mensaje.receptor_id == asesor.id)) |
+            ((Mensaje.emisor_id == asesor.id) & (Mensaje.receptor_id == usuario_id))
+        ).order_by(Mensaje.fecha).all()
+        
+        return jsonify([{
+            'id': m.id,
+            'emisor_id': m.emisor_id,
+            'receptor_id': m.receptor_id,
+            'contenido': m.contenido,
+            'fecha': m.fecha.isoformat()
+        } for m in mensajes]), 200
+    except Exception as e:
+        print("Error al obtener mensajes:", str(e))
+        return jsonify({'error': str(e)}), 500

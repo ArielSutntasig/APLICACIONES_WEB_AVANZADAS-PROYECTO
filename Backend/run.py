@@ -1,6 +1,7 @@
-from app import create_app
+from app import create_app, socketio  # Importa socketio desde tu __init__.py
 
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)  # Cambia el puerto si es necesario
+    # Cambia app.run por socketio.run para manejar SocketIO
+    socketio.run(app, debug=True, host='0.0.0.0', port=5000)
