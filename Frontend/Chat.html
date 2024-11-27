@@ -296,12 +296,14 @@
             `;
 
             listItem.addEventListener("click", () => {
-                document.querySelectorAll('#clientsList li').forEach(li => li.classList.remove('active'));
-                listItem.classList.add('active');
-                currentReceptorId = parseInt(client.usuario_id);
-                document.getElementById("chatMessages").innerHTML = "";
-                loadMessages();
-            });
+    document.querySelectorAll('#clientsList li').forEach(li => li.classList.remove('active'));
+    listItem.classList.add('active');
+    currentReceptorId = parseInt(client.usuario_id);
+    document.getElementById("chatMessages").innerHTML = "";
+    loadMessages();
+    // Reset notification counter when selecting client
+    updateNotificationBadge(client.usuario_id, false);
+});
 
             clientsList.appendChild(listItem);
         });
@@ -309,6 +311,17 @@
         console.error("Error details:", error);
         document.getElementById("clientsList").innerHTML = 
             `<li class="list-group-item text-danger">Error al cargar clientes activos: ${error.message}</li>`;
+    }
+}
+
+// Add this function after loadActiveClients()
+function updateNotificationBadge(clientId, increment = true) {
+    const clientItem = document.querySelector(`#clientsList li[data-client-id="${clientId}"]`);
+    if (clientItem) {
+        const badge = clientItem.querySelector('.badge');
+        let count = parseInt(badge.textContent) || 0;
+        count = increment ? count + 1 : 0;
+        badge.textContent = count;
     }
 }
 
@@ -372,15 +385,20 @@
 
       // Recepción de mensajes
       socket.on("mensaje_nuevo", (data) => {
-        const shouldDisplay =
-          data.receptor_id === userId ||
-          data.emisor_id === userId ||
-          (data.is_broadcast && !isAsesor);
+    const shouldDisplay =
+        data.receptor_id === userId ||
+        data.emisor_id === userId ||
+        (data.is_broadcast && !isAsesor);
 
-        if (shouldDisplay) {
-          addMessage(data.contenido, data.emisor_id, data.fecha);
+    if (shouldDisplay) {
+        addMessage(data.contenido, data.emisor_id, data.fecha);
+        
+        // Update notification counter for incoming messages
+        if (isAsesor && data.emisor_id !== userId) {
+            updateNotificationBadge(data.emisor_id, true);
         }
-      });
+    }
+});
 
       // Cargar mensajes al inicio
       document.addEventListener("DOMContentLoaded", loadMessages);
