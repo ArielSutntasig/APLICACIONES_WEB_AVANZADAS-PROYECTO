@@ -9,6 +9,20 @@ class Usuario(db.Model):
     contraseña = db.Column('Contraseña', db.String(255), nullable=False)  # Encriptada
     fecha_registro = db.Column('FechaRegistro', db.DateTime, default=db.func.current_timestamp())
 
+    # Relaciones con mensajes
+    mensajes_recibidos = db.relationship(
+        'Mensaje',
+        foreign_keys='Mensaje.receptor_id',
+        backref='receptor',
+        lazy='dynamic'
+    )
+    mensajes_enviados = db.relationship(
+        'Mensaje',
+        foreign_keys='Mensaje.emisor_id',
+        backref='emisor',
+        lazy='dynamic'
+    )
+
     def __repr__(self):
         return f"<Usuario {self.email}>"
 
@@ -42,7 +56,7 @@ class Carrito(db.Model):
 
     def __repr__(self):
         return f"<Carrito Usuario: {self.usuario_id} Producto: {self.producto_id}>"
-    
+
 # Modelo de Orden
 class Orden(db.Model):
     __tablename__ = 'Ordenes'
@@ -58,6 +72,9 @@ class Orden(db.Model):
     usuario = db.relationship('Usuario', backref='ordenes')
     detalles = db.relationship('DetalleOrden', backref='orden', lazy=True)
 
+    def __repr__(self):
+        return f"<Orden {self.id} Usuario: {self.usuario_id}>"
+
 class DetalleOrden(db.Model):
     __tablename__ = 'DetallesOrden'
     id = db.Column('Id', db.Integer, primary_key=True)
@@ -65,8 +82,11 @@ class DetalleOrden(db.Model):
     producto_id = db.Column('ProductoId', db.Integer, db.ForeignKey('Productos.Id'), nullable=False)
     cantidad = db.Column('Cantidad', db.Integer, nullable=False)
     precio_unitario = db.Column('PrecioUnitario', db.Float, nullable=False)
-    
-# Agregar nuevo modelo para mensajes
+
+    def __repr__(self):
+        return f"<DetalleOrden Orden: {self.orden_id} Producto: {self.producto_id}>"
+
+# Modelo de Mensajes
 class Mensaje(db.Model):
     __tablename__ = 'Mensajes'
     id = db.Column('Id', db.Integer, primary_key=True)
@@ -76,5 +96,5 @@ class Mensaje(db.Model):
     leido = db.Column('Leido', db.Boolean, default=False)
     fecha = db.Column('Fecha', db.DateTime, default=db.func.current_timestamp())
 
-    emisor = db.relationship('Usuario', foreign_keys=[emisor_id], backref='mensajes_enviados')
-    receptor = db.relationship('Usuario', foreign_keys=[receptor_id], backref='mensajes_recibidos')
+    def __repr__(self):
+        return f"<Mensaje {self.id}: De {self.emisor_id} a {self.receptor_id}>"

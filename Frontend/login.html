@@ -76,7 +76,6 @@
         background-color: #1976d2;
         border-color: #1976d2;
       }
-      
     </style>
   </head>
   <body>
@@ -136,19 +135,18 @@
           </div>
           <a href="Forgot.html" class="forgot-password">Forgot password?</a>
         </div>
-         
+
         <!-- Botón de login -->
-        <button type="submit" class="btn btn-primary w-100 btn-login">
+        <button type="submit" class="btn btn-primary w-100 btn-login" id="loginButton">
           LOGIN
         </button>
 
-              <!-- Separador y Sign up link -->
-      <div class="text-center mt-3">
-        <span class="signup-text">
-          Already have an account? <a href="Sing Up.html" class="Sing up">Sign up</a>
-        </span>
-      </div>
-
+        <!-- Separador y Sign up link -->
+        <div class="text-center mt-3">
+          <span class="signup-text">
+            Already have an account? <a href="SingUp.html" class="Sing up">Sign up</a>
+          </span>
+        </div>
       </form>
     </div>
 
@@ -171,47 +169,57 @@
         }
       }
 
-          document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      // Manejar el formulario de login
+      document.getElementById("loginForm").addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const loginButton = document.getElementById("loginButton");
+
+        // Validar el formato del correo electrónico
+        if (!validateEmail(email)) {
+          alert("Por favor, introduce un correo electrónico válido.");
+          return;
+        }
+
+        loginButton.disabled = true; // Desactiva el botón para evitar múltiples envíos
 
         try {
-            const response = await fetch("http://127.0.0.1:5000/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
+          const response = await fetch("http://127.0.0.1:5000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Datos recibidos:', result); // Para depurar
+          const result = await response.json();
 
-                localStorage.setItem("usuario_id", result.usuario_id);
-                localStorage.setItem("nombre_usuario", result.nombre_completo);
-                localStorage.setItem("email_usuario", email); // Guardamos el email del input
+          if (response.ok) {
+            localStorage.setItem("usuario_id", result.usuario_id);
+            localStorage.setItem("nombre_usuario", result.nombre_completo);
+            localStorage.setItem("email_usuario", email);
 
-                // Verificación con console.log
-                console.log('Email ingresado:', email);
-                console.log('Email esperado: asesor.comercial@gmail.com');
-
-                            // Redirigir según el email
-                if (email === 'asesor.comercial@gmail.com') {
-                    window.location.href = "gestionProductos.html";
-                } else {
-                    window.location.href = "home.html";
-                }
+            if (email === "asesor.comercial@gmail.com") {
+              window.location.href = "gestionProductos.html";
             } else {
-                const error = await response.json();
-                alert(`Error: ${error.error}`);
+              window.location.href = "home.html";
             }
+          } else {
+            alert(`Error: ${result.error}`);
+          }
         } catch (err) {
-            console.error('Error completo:', err);
-            alert("Error al conectar con el servidor. Intenta de nuevo más tarde.");
+          console.error("Error completo:", err);
+          alert("Error al conectar con el servidor. Intenta de nuevo más tarde.");
+        } finally {
+          loginButton.disabled = false; // Reactiva el botón después del proceso
         }
-    });
+      });
 
+      // Función para validar el formato del correo
+      function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
     </script>
   </body>
 </html>

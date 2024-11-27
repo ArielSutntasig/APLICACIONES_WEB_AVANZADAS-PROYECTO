@@ -2,13 +2,16 @@ import datetime
 from flask import Blueprint, jsonify, request, render_template, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import Usuario, Producto, Carrito, Orden, DetalleOrden
+from .models import Usuario, Producto, Carrito, Orden, DetalleOrden, Mensaje
 from app import db
 from werkzeug.utils import secure_filename
 import os
 
+
 main = Blueprint('main', __name__)
 CORS(main)
+
+ASESOR_EMAIL = 'asesor.comercial@gmail.com'
 
 # Crear un nuevo usuario
 @main.route('/usuarios', methods=['POST'])
@@ -16,16 +19,23 @@ def crear_usuario():
     data = request.json
     nombre = data.get('nombre_completo')
     email = data.get('email')
-    contraseña = generate_password_hash(data.get('contraseña'))
+    contraseña = data.get('contraseña')
 
-    nuevo_usuario = Usuario(nombre_completo=nombre, email=email, contraseña=contraseña)
+    if not nombre or not email or not contraseña:
+        return jsonify({"error": "Todos los campos son obligatorios"}), 400
+
+    contraseña_hash = generate_password_hash(contraseña)
+
+    nuevo_usuario = Usuario(nombre_completo=nombre, email=email, contraseña=contraseña_hash)
 
     try:
         db.session.add(nuevo_usuario)
         db.session.commit()
         return jsonify({"message": "Usuario creado exitosamente"}), 201
     except Exception as e:
+        db.session.rollback()
         return jsonify({"error": f"No se pudo crear el usuario: {e}"}), 500
+
 
 # Agregar un producto
 @main.route('/productos', methods=['POST'])
@@ -355,25 +365,120 @@ def obtener_nombre_usuario(usuario_id):
         return jsonify({"error": f"Error al obtener el nombre del usuario: {e}"}), 500
 
     
+# Obtener mensajes entre un usuario y el asesor
 @main.route('/mensajes/<int:usuario_id>', methods=['GET'])
 def obtener_mensajes(usuario_id):
     try:
         # Obtener el asesor
         asesor = Usuario.query.filter_by(email=ASESOR_EMAIL).first()
-        
-        # Obtener mensajes donde el usuario es emisor o receptor
+        if not asesor:
+            return jsonify({"error": "Asesor no encontrado"}), 404
+
+        # Obtener mensajes
         mensajes = Mensaje.query.filter(
-            ((Mensaje.emisor_id == usuario_id) & (Mensaje.receptor_id == asesor.id)) |
-            ((Mensaje.emisor_id == asesor.id) & (Mensaje.receptor_id == usuario_id))
+            db.or_(
+                db.and_(Mensaje.emisor_id == usuario_id, Mensaje.receptor_id == asesor.id),
+                db.and_(Mensaje.emisor_id == asesor.id, Mensaje.receptor_id == usuario_id)
+            )
         ).order_by(Mensaje.fecha).all()
-        
+
+        # Agregar logging para debug
+        print(f"Mensajes encontrados: {len(mensajes)}")
+        for mensaje in mensajes:
+            print(f"Mensaje: {mensaje.contenido} - De: {mensaje.emisor_id} Para: {mensaje.receptor_id}")
+
         return jsonify([{
-            'id': m.id,
-            'emisor_id': m.emisor_id,
-            'receptor_id': m.receptor_id,
-            'contenido': m.contenido,
-            'fecha': m.fecha.isoformat()
-        } for m in mensajes]), 200
+            "id": mensaje.id,
+            "emisor_id": mensaje.emisor_id,
+            "receptor_id": mensaje.receptor_id,
+            "contenido": mensaje.contenido,
+            "fecha": mensaje.fecha.isoformat()
+        } for mensaje in mensajes]), 200
     except Exception as e:
-        print("Error al obtener mensajes:", str(e))
-        return jsonify({'error': str(e)}), 500
+        print(f"Error al obtener mensajes: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+# Agregar un nuevo mensaje
+@main.route('/mensajes', methods=['POST'])
+def agregar_mensaje():
+    data = request.json
+    emisor_id = data.get('emisor_id')
+    receptor_id = data.get('receptor_id')
+    contenido = data.get('contenido')
+
+    if not emisor_id or not receptor_id or not contenido:
+        return jsonify({"error": "Todos los campos son obligatorios"}), 400
+
+    try:
+        # Validar existencia de usuarios
+        emisor = Usuario.query.get(emisor_id)
+        receptor = Usuario.query.get(receptor_id)
+
+        if not emisor or not receptor:
+            return jsonify({"error": "Emisor o receptor no encontrado"}), 404
+
+        # Crear mensaje
+        nuevo_mensaje = Mensaje(
+            emisor_id=emisor_id,
+            receptor_id=receptor_id,
+            contenido=contenido
+        )
+        db.session.add(nuevo_mensaje)
+        db.session.commit()
+
+        return jsonify({
+            "message": "Mensaje enviado exitosamente",
+            "mensaje": {
+                "id": nuevo_mensaje.id,
+                "emisor_id": nuevo_mensaje.emisor_id,
+                "receptor_id": nuevo_mensaje.receptor_id,
+                "contenido": nuevo_mensaje.contenido,
+                "fecha": nuevo_mensaje.fecha.isoformat(),
+                "leido": nuevo_mensaje.leido
+            }
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        print("Error al agregar mensaje:", str(e))
+        return jsonify({"error": f"No se pudo enviar el mensaje: {e}"}), 500
+
+# Obtener chats activos (solo para el asesor)
+# In routes.py - Update obtener_chats_activos route
+# app/routes.py
+@main.route('/obtener-chats-activos')
+def obtener_chats_activos():
+    try:
+        print("Debug: Accessing obtener-chats-activos route")
+        asesor = Usuario.query.filter_by(email=ASESOR_EMAIL).first()
+        
+        if not asesor:
+            return jsonify({"error": "Asesor no encontrado"}), 404
+
+        usuarios = db.session.query(
+            Usuario.id,
+            Usuario.nombre_completo
+        ).filter(
+            Usuario.email != ASESOR_EMAIL
+        ).all()
+
+        result = [{
+            "usuario_id": usuario[0],
+            "nombre": usuario[1],
+            "mensajes_no_leidos": 0
+        } for usuario in usuarios]
+
+        return jsonify(result)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+    
+@main.route('/obtener-asesor', methods=['GET'])
+def obtener_asesor():
+    try:
+        asesor = Usuario.query.filter_by(email=ASESOR_EMAIL).first()
+        if not asesor:
+            return jsonify({"error": "Asesor no encontrado"}), 404
+        return jsonify({"asesor_id": asesor.id}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

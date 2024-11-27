@@ -6,3 +6,4 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False  # Desactiva para evitar overhead
     SQLALCHEMY_ECHO = True  # Activa para ver las consultas SQL (opcional)
+
