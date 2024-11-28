@@ -81,22 +81,13 @@ def register_socket_events(socketio):
             receptor_id = data.get('receptor_id')
             contenido = data['contenido']
 
-            # Verificar datos esenciales
-            if not emisor_id or not receptor_id or not contenido:
-                emit('error', {'error': 'Datos incompletos para enviar el mensaje'})
-                return
-
-            emisor = Usuario.query.get(emisor_id)
-            if not emisor:
-                emit('error', {'error': 'Emisor no encontrado'})
-                return
-
-            # Crear mensaje en la base de datos
+            # Create message in database
             mensaje = Mensaje(
                 emisor_id=emisor_id,
                 receptor_id=receptor_id,
                 contenido=contenido,
-                leido=False
+                leido=False,
+                fecha=datetime.utcnow()
             )
             db.session.add(mensaje)
             db.session.commit()
@@ -107,13 +98,19 @@ def register_socket_events(socketio):
                 "receptor_id": receptor_id,
                 "contenido": contenido,
                 "fecha": mensaje.fecha.isoformat(),
+                "leido": False
             }
 
-            # Emitir el mensaje al receptor si está conectado
+            # Emit to receiver if connected
             if str(receptor_id) in usuarios_conectados:
                 emit('mensaje_nuevo', mensaje_data, room=usuarios_conectados[str(receptor_id)]['sid'])
-            else:
-                print(f"El cliente {receptor_id} no está conectado.")
+            
+            # Update notification badge for asesor
+            if receptor_id == Usuario.query.filter_by(email=ASESOR_EMAIL).first().id:
+                emit('actualizar_notificacion', {
+                    'cliente_id': emisor_id,
+                    'increment': True
+                }, broadcast=True)
 
         except Exception as e:
             print(f"Error al enviar mensaje: {e}")

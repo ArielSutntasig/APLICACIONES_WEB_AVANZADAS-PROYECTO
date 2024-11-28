@@ -448,23 +448,33 @@ def agregar_mensaje():
 @main.route('/obtener-chats-activos')
 def obtener_chats_activos():
     try:
-        print("Debug: Accessing obtener-chats-activos route")
         asesor = Usuario.query.filter_by(email=ASESOR_EMAIL).first()
-        
         if not asesor:
             return jsonify({"error": "Asesor no encontrado"}), 404
 
+        # Get users with unread message counts
         usuarios = db.session.query(
             Usuario.id,
-            Usuario.nombre_completo
+            Usuario.nombre_completo,
+            db.func.count(Mensaje.id).label('mensajes_no_leidos')
+        ).outerjoin(
+            Mensaje,
+            db.and_(
+                Mensaje.emisor_id == Usuario.id,
+                Mensaje.receptor_id == asesor.id,
+                Mensaje.leido == False
+            )
         ).filter(
             Usuario.email != ASESOR_EMAIL
+        ).group_by(
+            Usuario.id,
+            Usuario.nombre_completo
         ).all()
 
         result = [{
             "usuario_id": usuario[0],
             "nombre": usuario[1],
-            "mensajes_no_leidos": 0
+            "mensajes_no_leidos": usuario[2]
         } for usuario in usuarios]
 
         return jsonify(result)
@@ -481,4 +491,55 @@ def obtener_asesor():
             return jsonify({"error": "Asesor no encontrado"}), 404
         return jsonify({"asesor_id": asesor.id}), 200
     except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Actualizar producto
+@main.route('/productos/<int:producto_id>', methods=['PUT'])
+def actualizar_producto(producto_id):
+    try:
+        data = request.json
+        producto = Producto.query.get(producto_id)
+        if producto:
+            producto.nombre = data.get('nombre', producto.nombre)
+            producto.precio = data.get('precio', producto.precio)
+            producto.imagen_url = data.get('imagen_url', producto.imagen_url)
+            producto.en_oferta = data.get('en_oferta', producto.en_oferta)
+            producto.stock = data.get('stock', producto.stock)
+            db.session.commit()
+            return jsonify({"message": "Producto actualizado"}), 200
+        return jsonify({"error": "Producto no encontrado"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Eliminar producto
+@main.route('/productos/<int:producto_id>', methods=['DELETE'])
+def eliminar_producto(producto_id):
+    try:
+        producto = Producto.query.get(producto_id)
+        if producto:
+            db.session.delete(producto)
+            db.session.commit()
+            return jsonify({"message": "Producto eliminado"}), 200
+        return jsonify({"error": "Producto no encontrado"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@main.route('/marcar-mensajes-leidos/<int:emisor_id>', methods=['POST'])
+def marcar_mensajes_leidos(emisor_id):
+    try:
+        asesor = Usuario.query.filter_by(email=ASESOR_EMAIL).first()
+        if not asesor:
+            return jsonify({"error": "Asesor no encontrado"}), 404
+
+        # Update unread messages from this user to read
+        Mensaje.query.filter_by(
+            emisor_id=emisor_id,
+            receptor_id=asesor.id,
+            leido=False
+        ).update({"leido": True})
+        
+        db.session.commit()
+        return jsonify({"message": "Mensajes marcados como leídos"}), 200
+    except Exception as e:
+        db.session.rollback()
         return jsonify({"error": str(e)}), 500

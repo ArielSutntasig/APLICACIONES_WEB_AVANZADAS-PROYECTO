@@ -156,11 +156,14 @@
     </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <div class="container">
-        <a class="navbar-brand" href="home.html">TechShop</a>
-      </div>
-    </nav>
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand" href="home.html">TechShop</a>
+          <button class="btn btn-secondary" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i> Volver
+          </button>
+        </div>
+      </nav>
 
     <div class="chat-container">
       <!-- Lista de clientes -->
@@ -231,20 +234,32 @@
       }
 
       // Función para cargar mensajes
+            // In chat.html - Update loadMessages function
       async function loadMessages() {
-        try {
-          const response = await fetch(`http://localhost:5000/mensajes/${userId}`);
-          if (!response.ok) {
-            throw new Error(`Error del servidor: ${response.status}`);
+          try {
+              const targetId = isAsesor ? currentReceptorId : userId;
+              const response = await fetch(`http://localhost:5000/mensajes/${targetId}`);
+              if (!response.ok) {
+                  throw new Error(`Error del servidor: ${response.status}`);
+              }
+      
+              document.getElementById("chatMessages").innerHTML = "";
+              const mensajes = await response.json();
+              mensajes.forEach((msg) => {
+                  addMessage(msg.contenido, msg.emisor_id, msg.fecha);
+              });
+      
+              // Mark messages as read if asesor is viewing them
+              if (isAsesor && currentReceptorId) {
+                  await fetch(`http://localhost:5000/marcar-mensajes-leidos/${currentReceptorId}`, {
+                      method: 'POST'
+                  });
+                  // Update badge counter
+                  updateNotificationBadge(currentReceptorId, false);
+              }
+          } catch (error) {
+              console.error("Error cargando mensajes:", error);
           }
-
-          const mensajes = await response.json();
-          mensajes.forEach((msg) => {
-            addMessage(msg.contenido, msg.emisor_id, msg.fecha);
-          });
-        } catch (error) {
-          console.error("Error cargando mensajes:", error);
-        }
       }
 
 
