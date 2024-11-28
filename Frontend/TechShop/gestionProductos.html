@@ -1,315 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechShop - Gestión de Productos</title>
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        background-color: #f0f2f5;
-        min-height: 100vh;
-      }
 
-      .navbar {
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .admin-container {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-      }
-
-      .admin-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-      }
-
-      .card {
-        background: white;
-        border: none;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1rem;
-      }
-
-      .table-responsive {
-        border-radius: 8px;
-      }
-
-      .table {
-        margin-bottom: 0;
-      }
-
-      .table th {
-        background-color: #1976d2;
-        color: white;
-        padding: 1rem;
-      }
-
-      .table td {
-        padding: 1rem;
-        vertical-align: middle;
-      }
-
-      .btn-action {
-        padding: 0.5rem;
-        margin: 0 0.25rem;
-      }
-
-      .product-image {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 4px;
-      }
-
-      .status-badge {
-        padding: 0.5rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: bold;
-      }
-
-      .status-active {
-        background-color: #e8f5e9;
-        color: #2e7d32;
-      }
-
-      .status-inactive {
-        background-color: #fbe9e7;
-        color: #c62828;
-      }
-
-      .modal-header {
-        background-color: #1976d2;
-        color: white;
-      }
-
-      .form-label {
-        font-weight: 500;
-      }
-
-      .preview-image {
-        max-width: 200px;
-        max-height: 200px;
-        object-fit: cover;
-        border-radius: 4px;
-        margin-top: 1rem;
-      }
-
-      .badge-oferta {
-        background-color: #28a745;
-        color: white;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-      <div class="container">
-        <a class="navbar-brand">TechShop</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href=""></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#"></a>
-            </li>
-          </ul>
-    
-          <div class="d-flex align-items-center">
-             <!-- Botón de Cotizaciones -->
-        <a href="Chat.html" class="btn btn-success me-3">
-          <i class="fas fa-shopping-cart"></i> Cotizaciones
-        </a>
-
-            <!-- Botón para cerrar sesión -->
-            <button class="btn btn-primary" onclick="logout()">
-              <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
-    
-    
-
-    <!-- Admin Container -->
-    <div class="admin-container">
-      <!-- Header -->
-      <div class="admin-header">
-        <h2>Gestión de Productos</h2>
-        <button class="btn btn-primary" onclick="mostrarModalAgregar()">
-          <i class="fas fa-plus"></i> Agregar Producto
-        </button>
-      </div>
-
-      <!-- Products Table -->
-      <div class="card">
-        <div class="table-responsive">
-          <table class="table" id="productosTable">
-            <thead>
-              <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Oferta</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="productosTableBody">
-              <!-- Los productos se cargarán dinámicamente aquí -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal Agregar/Editar Producto -->
-    <div class="modal fade" id="productoModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalTitle">Agregar Producto</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form id="productoForm">
-              <input type="hidden" id="productoId" />
-              <div class="mb-3">
-                <label class="form-label">Nombre del Producto</label>
-                <input type="text" class="form-control" id="nombre" required />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Precio</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="precio"
-                  step="0.01"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Imagen URL</label>
-                <input type="text" class="form-control" id="imagen" required />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Stock</label>
-                <input type="number" class="form-control" id="stock" required min="0" />
-            </div>
-              <div class="mb-3">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="oferta" />
-                  <label class="form-check-label">¿En oferta?</label>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              onclick="guardarProducto()"
-            >
-              Guardar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    
-    <script>
-
-      // Variables globales
-      let productos = [];
-      const API_URL = "http://127.0.0.1:5000"; // Cambiar si el backend está en otro puerto/servidor
-      const productoModal = new bootstrap.Modal(document.getElementById("productoModal"));
-    
-      // Función para verificar la autorización del usuario
-      document.addEventListener("DOMContentLoaded", async function () {
-        const email = localStorage.getItem("email_usuario");
-        console.log("Email almacenado:", email);
-    
-        if (!email || email !== "asesor.comercial@gmail.com") {
-          alert("No tienes autorización para acceder a esta página.");
-          window.location.href = "home.html";
-          return;
-        }
-    
-        // Cargar productos
-        await cargarProductos();
-      });
-    
-      // Función para cargar productos desde la API
-          async function cargarProductos() {
-        try {
-            const response = await fetch(`${API_URL}/productos`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            productos = data;
-            actualizarTablaProductos();
-        } catch (error) {
-            console.error("Error al cargar productos:", error);
-            alert("Error al cargar los productos: " + error.message);
-        }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechShop - Gestión de Productos</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f0f2f5;
+      min-height: 100vh;
     }
-    
-      function actualizarTablaProductos() {
-    const tbody = document.getElementById("productosTableBody");
-    tbody.innerHTML = "";
 
-    productos.forEach((producto) => {
-      const imagenURL = producto.imagen_url.startsWith("http") 
-          ? producto.imagen_url 
+    .navbar {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .admin-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: white;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    .table-responsive {
+      border-radius: 8px;
+    }
+
+    .table {
+      margin-bottom: 0;
+    }
+
+    .table th {
+      background-color: #1976d2;
+      color: white;
+      padding: 1rem;
+    }
+
+    .table td {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+
+    .btn-action {
+      padding: 0.5rem;
+      margin: 0 0.25rem;
+    }
+
+    .product-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .status-badge {
+      padding: 0.5rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .status-active {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .status-inactive {
+      background-color: #fbe9e7;
+      color: #c62828;
+    }
+
+    .modal-header {
+      background-color: #1976d2;
+      color: white;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .preview-image {
+      max-width: 200px;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-top: 1rem;
+    }
+
+    .badge-oferta {
+      background-color: #28a745;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand">TechShop</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href=""></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#"></a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center">
+          <!-- Botón de Cotizaciones -->
+          <a href="Chat.html" class="btn btn-success me-3">
+            <i class="fas fa-shopping-cart"></i> Cotizaciones
+          </a>
+
+          <!-- Botón para cerrar sesión -->
+          <button class="btn btn-primary" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+
+  <!-- Admin Container -->
+  <div class="admin-container">
+    <!-- Header -->
+    <div class="admin-header">
+      <h2>Gestión de Productos</h2>
+      <button class="btn btn-primary" onclick="mostrarModalAgregar()">
+        <i class="fas fa-plus"></i> Agregar Producto
+      </button>
+    </div>
+
+    <!-- Products Table -->
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table" id="productosTable">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Oferta</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="productosTableBody">
+            <!-- Los productos se cargarán dinámicamente aquí -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Agregar/Editar Producto -->
+  <div class="modal fade" id="productoModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Agregar Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="productoForm">
+            <input type="hidden" id="productoId" />
+            <div class="mb-3">
+              <label class="form-label">Nombre del Producto</label>
+              <input type="text" class="form-control" id="nombre" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Precio</label>
+              <input type="number" class="form-control" id="precio" step="0.01" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Imagen URL</label>
+              <input type="text" class="form-control" id="imagen" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Stock</label>
+              <input type="number" class="form-control" id="stock" required min="0" />
+            </div>
+            <div class="mb-3">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="oferta" />
+                <label class="form-check-label">¿En oferta?</label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-primary" onclick="guardarProducto()">
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <script>
+
+    // Variables globales
+    let productos = [];
+    const API_URL = "http://127.0.0.1:5000"; // Cambiar si el backend está en otro puerto/servidor
+    const productoModal = new bootstrap.Modal(document.getElementById("productoModal"));
+
+    // Función para verificar la autorización del usuario
+    document.addEventListener("DOMContentLoaded", async function () {
+      const email = localStorage.getItem("email_usuario");
+      console.log("Email almacenado:", email);
+
+      if (!email || email !== "asesor.comercial@gmail.com") {
+        alert("No tienes autorización para acceder a esta página.");
+        window.location.href = "home.html";
+        return;
+      }
+
+      // Cargar productos
+      await cargarProductos();
+    });
+
+    // Función para cargar productos desde la API
+    async function cargarProductos() {
+      try {
+        const response = await fetch(`${API_URL}/productos`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        productos = data;
+        actualizarTablaProductos();
+      } catch (error) {
+        console.error("Error al cargar productos:", error);
+        alert("Error al cargar los productos: " + error.message);
+      }
+    }
+
+    function actualizarTablaProductos() {
+      const tbody = document.getElementById("productosTableBody");
+      tbody.innerHTML = "";
+
+      productos.forEach((producto) => {
+        const imagenURL = producto.imagen_url.startsWith("http")
+          ? producto.imagen_url
           : `${API_URL}${producto.imagen_url}`;
-      
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
         <td><img src="${imagenURL}" class="product-image" alt="${producto.nombre}" /></td>
         <td>${producto.nombre}</td>
         <td>$${producto.precio.toFixed(2)}</td>
@@ -323,100 +296,101 @@
           </button>
         </td>
       `;
-      tbody.appendChild(tr);
-    });
-  }
-    
-      // Función para mostrar el modal de agregar producto
-      function mostrarModalAgregar() {
-        document.getElementById("modalTitle").textContent = "Agregar Producto";
-        document.getElementById("productoForm").reset();
-        document.getElementById("productoId").value = "";
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Función para mostrar el modal de agregar producto
+    function mostrarModalAgregar() {
+      document.getElementById("modalTitle").textContent = "Agregar Producto";
+      document.getElementById("productoForm").reset();
+      document.getElementById("productoId").value = "";
+      productoModal.show();
+    }
+
+    // Corregir la función guardarProducto
+
+    async function guardarProducto() {
+      const form = document.getElementById("productoForm");
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const id = document.getElementById("productoId").value;
+      const productoData = {
+        nombre: document.getElementById("nombre").value,
+        precio: parseFloat(document.getElementById("precio").value),
+        imagen_url: document.getElementById("imagen").value,
+        en_oferta: document.getElementById("oferta").checked,
+        stock: parseInt(document.getElementById("stock").value) // Asegurarse de obtener el valor actual del stock
+      };
+
+      try {
+        const url = id ? `${API_URL}/productos/${id}` : `${API_URL}/productos`;
+        const method = id ? "PUT" : "POST";
+
+        const response = await fetch(url, {
+          method: method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(productoData)
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          alert(result.message);
+          productoModal.hide();
+          await cargarProductos();
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error al guardar el producto");
+      }
+    }
+
+    // Función para cargar un producto en el modal de edición
+    function editarProducto(id) {
+      const producto = productos.find((p) => p.id === id);
+      if (producto) {
+        document.getElementById("modalTitle").textContent = "Editar Producto";
+        document.getElementById("productoId").value = producto.id;
+        document.getElementById("nombre").value = producto.nombre;
+        document.getElementById("precio").value = producto.precio;
+        document.getElementById("imagen").value = producto.imagen_url;
+        document.getElementById("oferta").checked = producto.en_oferta;
+        document.getElementById("stock").value = producto.stock;
         productoModal.show();
       }
-    
-      // Corregir la función guardarProducto
-            
-      async function guardarProducto() {
-          const form = document.getElementById("productoForm");
-          if (!form.checkValidity()) {
-              form.reportValidity();
-              return;
-          }
+    }
 
-          const id = document.getElementById("productoId").value;
-          const productoData = {
-              nombre: document.getElementById("nombre").value,
-              precio: parseFloat(document.getElementById("precio").value),
-              imagen_url: document.getElementById("imagen").value,
-              en_oferta: document.getElementById("oferta").checked,
-              stock: parseInt(document.getElementById("stock").value) // Asegurarse de obtener el valor actual del stock
-          };
+    // Función para eliminar un producto
+    async function eliminarProducto(id) {
+      if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
 
-          try {
-              const url = id ? `${API_URL}/productos/${id}` : `${API_URL}/productos`;
-              const method = id ? "PUT" : "POST";
-              
-              const response = await fetch(url, {
-                  method: method,
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(productoData)
-              });
-
-              if (response.ok) {
-                  const result = await response.json();
-                  alert(result.message);
-                  productoModal.hide();
-                  await cargarProductos();
-              }
-          } catch (error) {
-              console.error("Error:", error);
-              alert("Error al guardar el producto");
-          }
-}
-    
-      // Función para cargar un producto en el modal de edición
-      function editarProducto(id) {
-        const producto = productos.find((p) => p.id === id);
-        if (producto) {
-          document.getElementById("modalTitle").textContent = "Editar Producto";
-          document.getElementById("productoId").value = producto.id;
-          document.getElementById("nombre").value = producto.nombre;
-          document.getElementById("precio").value = producto.precio;
-          document.getElementById("imagen").value = producto.imagen_url;
-          document.getElementById("oferta").checked = producto.en_oferta;
-          document.getElementById("stock").value = producto.stock;
-          productoModal.show();
+      try {
+        const response = await fetch(`${API_URL}/productos/${id}`, { method: "DELETE" });
+        if (response.ok) {
+          alert("Producto eliminado");
+          await cargarProductos();
+        } else {
+          const error = await response.json();
+          alert(`Error: ${error.error}`);
         }
+      } catch (error) {
+        console.error("Error al eliminar el producto:", error);
+        alert("Error al eliminar el producto.");
       }
-    
-      // Función para eliminar un producto
-      async function eliminarProducto(id) {
-        if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
-    
-        try {
-          const response = await fetch(`${API_URL}/productos/${id}`, { method: "DELETE" });
-          if (response.ok) {
-            alert("Producto eliminado");
-            await cargarProductos();
-          } else {
-            const error = await response.json();
-            alert(`Error: ${error.error}`);
-          }
-        } catch (error) {
-          console.error("Error al eliminar el producto:", error);
-          alert("Error al eliminar el producto.");
-        }
-      }
+    }
 
-      // Función para cerrar sesión
+    // Función para cerrar sesión
     function logout() {
       localStorage.removeItem("usuario_id");
       localStorage.removeItem("nombre_completo");
       window.location.href = "index.html";
     }
-    </script>
-    
+  </script>
 
-  </body>
+
+</body>
+
 </html>

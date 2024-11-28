@@ -1,413 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechShop - Home</title>
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <!-- SweetAlert2 -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --primary-color: #1976d2;
-        --secondary-color: #1565c0;
-        --accent-color: #28a745;
-        --background-color: #f8f9fa;
-        --text-color: #333;
-        --light-gray: #6c757d;
-      }
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: var(--background-color);
-        color: var(--text-color);
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechShop - Home</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- SweetAlert2 -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #1976d2;
+      --secondary-color: #1565c0;
+      --accent-color: #28a745;
+      --background-color: #f8f9fa;
+      --text-color: #333;
+      --light-gray: #6c757d;
+    }
 
-      .navbar {
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
 
-      .nav-link {
-        color: var(--text-color);
-        font-weight: 500;
-        transition: color 0.3s ease;
-      }
+    .navbar {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-      .nav-link:hover {
-        color: var(--primary-color);
-      }
+    .nav-link {
+      color: var(--text-color);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
 
+    .nav-link:hover {
+      color: var(--primary-color);
+    }
+
+    .banner {
+      background: linear-gradient(45deg, #1a237e, #0d47a1);
+      color: white;
+      padding: 3rem;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .banner h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .category-icons {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .category-item {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text-color);
+      width: 140px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .category-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-item i {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 0.75rem;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      height: 100%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .product-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-price {
+      color: var(--primary-color);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .btn-add-cart {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-top: auto;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-add-cart:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .btn-add-cart:disabled {
+      background-color: var(--light-gray);
+    }
+
+    .offer-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--accent-color);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+    }
+
+    .stock-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+    }
+
+    .search-container {
+      position: relative;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      padding-right: 3rem;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--primary-color);
+    }
+
+    .search-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--accent-color);
+      color: white;
+      border-radius: 50%;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    #loadingSpinner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      display: none;
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 999;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
       .banner {
-        background: linear-gradient(45deg, #1a237e, #0d47a1);
-        color: white;
-        padding: 3rem;
-        margin-bottom: 2rem;
-        border-radius: 12px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .banner-content {
-        position: relative;
-        z-index: 2;
-        max-width: 600px;
+        padding: 2rem;
       }
 
       .banner h2 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-      }
-
-      .category-icons {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 1.5rem;
-        margin: 2rem 0;
+        font-size: 2rem;
       }
 
       .category-item {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 10px;
-        text-align: center;
-        text-decoration: none;
-        color: var(--text-color);
-        width: 140px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      }
-
-      .category-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      .category-item i {
-        font-size: 2rem;
-        color: var(--primary-color);
-        margin-bottom: 0.75rem;
+        width: calc(50% - 1rem);
       }
 
       .product-card {
-        background: white;
-        border-radius: 10px;
-        padding: 1rem;
-        height: 100%;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-      }
-
-      .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-
-      .product-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
         margin-bottom: 1rem;
       }
+    }
+  </style>
+</head>
 
-      .product-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-      }
-
-      .product-price {
-        color: var(--primary-color);
-        font-size: 1.25rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-      }
-
-      .btn-add-cart {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.75rem;
-        border-radius: 8px;
-        margin-top: auto;
-        transition: background-color 0.3s ease;
-      }
-
-      .btn-add-cart:hover {
-        background-color: var(--secondary-color);
-      }
-
-      .btn-add-cart:disabled {
-        background-color: var(--light-gray);
-      }
-
-      .offer-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: var(--accent-color);
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.875rem;
-      }
-
-      .stock-badge {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.875rem;
-      }
-
-      .search-container {
-        position: relative;
-        max-width: 500px;
-        margin: 0 auto;
-      }
-
-      .search-input {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        padding-right: 3rem;
-        border: 1px solid #ddd;
-        border-radius: 25px;
-        transition: box-shadow 0.3s ease;
-      }
-
-      .search-input:focus {
-        outline: none;
-        box-shadow: 0 0 0 2px var(--primary-color);
-      }
-
-      .search-btn {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: var(--primary-color);
-        cursor: pointer;
-      }
-
-      .cart-count {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background-color: var(--accent-color);
-        color: white;
-        border-radius: 50%;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        font-weight: bold;
-      }
-
-      #loadingSpinner {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        display: none;
-      }
-
-      .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.8);
-        z-index: 999;
-        display: none;
-      }
-
-      @media (max-width: 768px) {
-        .banner {
-          padding: 2rem;
-        }
-
-        .banner h2 {
-          font-size: 2rem;
-        }
-
-        .category-item {
-          width: calc(50% - 1rem);
-        }
-
-        .product-card {
-          margin-bottom: 1rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Loading Spinner -->
-    <div class="loading-overlay" id="loadingOverlay">
-      <div id="loadingSpinner" class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Cargando...</span>
-      </div>
+<body>
+  <!-- Loading Spinner -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div id="loadingSpinner" class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
     </div>
-  
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-      <div class="container">
-        <a class="navbar-brand" >TechShop</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="#productos">Productos</a>
-            </li>
-          </ul>
-  
-          <div class="d-flex align-items-center">
-            <!-- Contenedor del nombre del usuario -->
-            <span id="userNameDisplay" class="me-3 d-none">
-              <i class="fas fa-user"></i>
-              <span id="userName"></span>
-            </span>
-          
-            <a href="Cart.html" class="btn btn-outline-primary me-2 position-relative">
-              <i class="fas fa-shopping-cart"></i>
-              <span class="cart-count" id="cartCount">0</span>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand">TechShop</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#productos">Productos</a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center">
+          <!-- Contenedor del nombre del usuario -->
+          <span id="userNameDisplay" class="me-3 d-none">
+            <i class="fas fa-user"></i>
+            <span id="userName"></span>
+          </span>
+
+          <a href="Cart.html" class="btn btn-outline-primary me-2 position-relative">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="cartCount">0</span>
+          </a>
+
+          <div id="userContainer">
+            <!-- Botón de Iniciar Sesión por defecto -->
+            <a href="index.html" class="btn btn-primary" id="loginButton">
+              <i class="fas fa-user"></i> Iniciar Sesión
             </a>
-          
-            <div id="userContainer">
-              <!-- Botón de Iniciar Sesión por defecto -->
-              <a href="index.html" class="btn btn-primary" id="loginButton">
-                <i class="fas fa-user"></i> Iniciar Sesión
-              </a>
-            </div>
           </div>
         </div>
       </div>
-    </nav>
-
-    <!-- Banner -->
-    <div class="container mt-4">
-      <div class="banner">
-        <div class="banner-content">
-          <h2>COTIZA TÚ MISMO</h2>
-          <p>SELECCIONA LOS COMPONENTES PARA TU ENSAMBLE PREFERIDO</p>
-          <a href="Chat.html" class="btn btn-light btn-lg">
-            <i class="fas fa-calculator me-2"></i>COTIZAR AHORA
-          </a>
-        </div>
-      </div>
     </div>
+  </nav>
 
-    <!-- Categorías -->
-    <div class="container">
-      <div class="category-icons">
-        <a href="#pc" class="category-item">
-          <i class="fas fa-desktop"></i>
-          <p>PC COMPLETA</p>
-        </a>
-        <a href="#componentes" class="category-item">
-          <i class="fas fa-microchip"></i>
-          <p>COMPONENTES</p>
-        </a>
-        <a href="#perifericos" class="category-item">
-          <i class="fas fa-keyboard"></i>
-          <p>PERIFÉRICOS</p>
-        </a>
-        <a href="#laptops" class="category-item">
-          <i class="fas fa-laptop"></i>
-          <p>LAPTOPS</p>
-        </a>
-        <a href="#audio" class="category-item">
-          <i class="fas fa-headset"></i>
-          <p>AUDIO</p>
-        </a>
-        <a href="#celulares" class="category-item">
-          <i class="fas fa-mobile-alt"></i>
-          <p>CELULARES</p>
+  <!-- Banner -->
+  <div class="container mt-4">
+    <div class="banner">
+      <div class="banner-content">
+        <h2>COTIZA TÚ MISMO</h2>
+        <p>SELECCIONA LOS COMPONENTES PARA TU ENSAMBLE PREFERIDO</p>
+        <a href="Chat.html" class="btn btn-light btn-lg">
+          <i class="fas fa-calculator me-2"></i>COTIZAR AHORA
         </a>
       </div>
     </div>
+  </div>
 
-    <!-- Productos -->
-    <div class="container" id="productos">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>PRODUCTOS DESTACADOS</h3>
-        <div class="search-container">
-          <input
-            type="text"
-            class="search-input"
-            id="searchInput"
-            placeholder="Buscar productos..."
-          />
-          <button class="search-btn" onclick="searchProducts()">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
+  <!-- Categorías -->
+  <div class="container">
+    <div class="category-icons">
+      <a href="#pc" class="category-item">
+        <i class="fas fa-desktop"></i>
+        <p>PC COMPLETA</p>
+      </a>
+      <a href="#componentes" class="category-item">
+        <i class="fas fa-microchip"></i>
+        <p>COMPONENTES</p>
+      </a>
+      <a href="#perifericos" class="category-item">
+        <i class="fas fa-keyboard"></i>
+        <p>PERIFÉRICOS</p>
+      </a>
+      <a href="#laptops" class="category-item">
+        <i class="fas fa-laptop"></i>
+        <p>LAPTOPS</p>
+      </a>
+      <a href="#audio" class="category-item">
+        <i class="fas fa-headset"></i>
+        <p>AUDIO</p>
+      </a>
+      <a href="#celulares" class="category-item">
+        <i class="fas fa-mobile-alt"></i>
+        <p>CELULARES</p>
+      </a>
+    </div>
+  </div>
 
-      <div class="row" id="productosContainer">
-        <!-- Los productos se cargarán dinámicamente aquí -->
+  <!-- Productos -->
+  <div class="container" id="productos">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3>PRODUCTOS DESTACADOS</h3>
+      <div class="search-container">
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos..." />
+        <button class="search-btn" onclick="searchProducts()">
+          <i class="fas fa-search"></i>
+        </button>
       </div>
     </div>
 
-    <!-- Bootstrap y otros scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <div class="row" id="productosContainer">
+      <!-- Los productos se cargarán dinámicamente aquí -->
+    </div>
+  </div>
 
-    <script>
-      // Variables globales
-      let productos = [];
-      let productosOriginal = [];
-      const API_URL = "http://localhost:5000";
+  <!-- Bootstrap y otros scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-      function navigateToPage(page) {
-        window.location.href = page;
-      }
+  <script>
+    // Variables globales
+    let productos = [];
+    let productosOriginal = [];
+    const API_URL = "http://localhost:5000";
 
-      // Funciones de utilidad
-      function showLoading() {
-        document.getElementById("loadingOverlay").style.display = "flex";
-        document.getElementById("loadingSpinner").style.display = "block";
-      }
+    function navigateToPage(page) {
+      window.location.href = page;
+    }
 
-      function hideLoading() {
-        document.getElementById("loadingOverlay").style.display = "none";
-        document.getElementById("loadingSpinner").style.display = "none";
-      }
+    // Funciones de utilidad
+    function showLoading() {
+      document.getElementById("loadingOverlay").style.display = "flex";
+      document.getElementById("loadingSpinner").style.display = "block";
+    }
 
-      // Función para verificar el estado de login
-      function checkLoginStatus() {
-    const userId = localStorage.getItem("usuario_id");
-    const nombreUsuario = localStorage.getItem("nombre_completo");
+    function hideLoading() {
+      document.getElementById("loadingOverlay").style.display = "none";
+      document.getElementById("loadingSpinner").style.display = "none";
+    }
 
-    if (userId && nombreUsuario) {
+    // Función para verificar el estado de login
+    function checkLoginStatus() {
+      const userId = localStorage.getItem("usuario_id");
+      const nombreUsuario = localStorage.getItem("nombre_completo");
+
+      if (userId && nombreUsuario) {
         // Usuario logueado, mostrar el botón de Cerrar Sesión
         document.getElementById("userContainer").innerHTML = `
             <div class="dropdown">
@@ -425,134 +408,133 @@
                 </ul>
             </div>
         `;
-    } else {
+      } else {
         // Usuario logueado, mostrar el botón de Cerrar Sesión
         document.getElementById("userContainer").innerHTML = `
             <a href="login.html" class="btn btn-primary" id="loginButton">
                 <i class="fas fa-user"></i> Cerrar Sesión
             </a>
         `;
+      }
     }
-}
 
 
-      // Función para cerrar sesión
-      function logout() {
+    // Función para cerrar sesión
+    function logout() {
       localStorage.removeItem("usuario_id");
       localStorage.removeItem("nombre_completo");
       window.location.href = "login.html";
-     }
+    }
 
-      // Función para actualizar el contador del carrito
-      async function actualizarContadorCarrito(userId) {
-        try {
-          console.log("Actualizando contador para usuario:", userId);
-          const response = await fetch(`${API_URL}/carrito/${userId}`);
+    // Función para actualizar el contador del carrito
+    async function actualizarContadorCarrito(userId) {
+      try {
+        console.log("Actualizando contador para usuario:", userId);
+        const response = await fetch(`${API_URL}/carrito/${userId}`);
 
-          if (!response.ok) {
-            throw new Error("Error al obtener carrito");
-          }
-
-          const items = await response.json();
-          console.log("Items en carrito:", items);
-
-          const count = items.reduce((total, item) => total + item.cantidad, 0);
-          console.log("Cantidad total:", count);
-
-          document.getElementById("cartCount").textContent = count;
-        } catch (error) {
-          console.error("Error al actualizar carrito:", error);
+        if (!response.ok) {
+          throw new Error("Error al obtener carrito");
         }
+
+        const items = await response.json();
+        console.log("Items en carrito:", items);
+
+        const count = items.reduce((total, item) => total + item.cantidad, 0);
+        console.log("Cantidad total:", count);
+
+        document.getElementById("cartCount").textContent = count;
+      } catch (error) {
+        console.error("Error al actualizar carrito:", error);
       }
+    }
 
-      // Función para cargar productos
-      async function loadProducts() {
-        showLoading();
-        try {
-          const response = await fetch(`${API_URL}/productos`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
+    // Función para cargar productos
+    async function loadProducts() {
+      showLoading();
+      try {
+        const response = await fetch(`${API_URL}/productos`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-          console.log("Intentando obtener productos...");
-          const data = await response.json();
-          console.log("Datos recibidos:", data);
+        console.log("Intentando obtener productos...");
+        const data = await response.json();
+        console.log("Datos recibidos:", data);
 
-          if (Array.isArray(data)) {
-            productosOriginal = data.map((producto) => ({
-              ...producto,
-              imagen_url: producto.imagen_url
-                ? producto.imagen_url.startsWith("http")
-                  ? producto.imagen_url
-                  : `${API_URL}${producto.imagen_url}`
-                : "/static/images/default-product.jpg",
-            }));
-            productos = [...productosOriginal];
-            renderProducts();
-          } else {
-            throw new Error("El formato de datos no es válido");
-          }
-        } catch (error) {
-          console.error("Error al cargar productos:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Error al cargar productos",
-            text: "No se pudieron cargar los productos. Por favor, intenta nuevamente.",
-          });
-          document.getElementById("productosContainer").innerHTML = `
+        if (Array.isArray(data)) {
+          productosOriginal = data.map((producto) => ({
+            ...producto,
+            imagen_url: producto.imagen_url
+              ? producto.imagen_url.startsWith("http")
+                ? producto.imagen_url
+                : `${API_URL}${producto.imagen_url}`
+              : "/static/images/default-product.jpg",
+          }));
+          productos = [...productosOriginal];
+          renderProducts();
+        } else {
+          throw new Error("El formato de datos no es válido");
+        }
+      } catch (error) {
+        console.error("Error al cargar productos:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error al cargar productos",
+          text: "No se pudieron cargar los productos. Por favor, intenta nuevamente.",
+        });
+        document.getElementById("productosContainer").innerHTML = `
             <div class="col-12 text-center">
                 <p class="text-danger">Error al cargar los productos. Por favor, recarga la página.</p>
             </div>
         `;
-        } finally {
-          hideLoading();
-        }
+      } finally {
+        hideLoading();
       }
+    }
 
-      // Para subir una nueva imagen de producto
-      async function uploadProductImage(file) {
-        const formData = new FormData();
-        formData.append("image", file);
+    // Para subir una nueva imagen de producto
+    async function uploadProductImage(file) {
+      const formData = new FormData();
+      formData.append("image", file);
 
-        try {
-          const response = await fetch(`${API_URL}/upload-image`, {
-            method: "POST",
-            body: formData,
-          });
+      try {
+        const response = await fetch(`${API_URL}/upload-image`, {
+          method: "POST",
+          body: formData,
+        });
 
-          if (!response.ok) throw new Error("Error al subir imagen");
+        if (!response.ok) throw new Error("Error al subir imagen");
 
-          const data = await response.json();
-          return data.url; // URL de la imagen guardada
-        } catch (error) {
-          console.error("Error:", error);
-          throw error;
-        }
+        const data = await response.json();
+        return data.url; // URL de la imagen guardada
+      } catch (error) {
+        console.error("Error:", error);
+        throw error;
       }
+    }
 
-      // Función para renderizar productos
-      function renderProducts() {
-        const container = document.getElementById("productosContainer");
+    // Función para renderizar productos
+    function renderProducts() {
+      const container = document.getElementById("productosContainer");
 
-        if (!productos || productos.length === 0) {
-          container.innerHTML = `
+      if (!productos || productos.length === 0) {
+        container.innerHTML = `
             <div class="col-12 text-center">
                 <p>No hay productos disponibles en este momento.</p>
             </div>
         `;
-          return;
-        }
+        return;
+      }
 
-        container.innerHTML = productos
-          .map(
-            (producto) => `
+      container.innerHTML = productos
+        .map(
+          (producto) => `
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="product-card">
-                ${
-                  producto.en_oferta
-                    ? '<span class="offer-badge">OFERTA</span>'
-                    : ""
-                }
+                ${producto.en_oferta
+              ? '<span class="offer-badge">OFERTA</span>'
+              : ""
+            }
                 <span class="stock-badge">Stock: ${producto.stock}</span>
                 <img src="${producto.imagen_url}" 
                      class="product-image" 
@@ -560,8 +542,8 @@
                      onerror="this.src='/static/images/default-product.jpg'">
                 <h5 class="product-title">${producto.nombre}</h5>
                 <p class="product-price">$${parseFloat(producto.precio).toFixed(
-                  2
-                )}</p>
+              2
+            )}</p>
                 <button class="btn btn-add-cart" 
                         onclick="addToCart(${producto.id}, ${producto.precio})"
                         ${producto.stock <= 0 ? "disabled" : ""}>
@@ -570,217 +552,218 @@
             </div>
         </div>
     `
-          )
-          .join("");
+        )
+        .join("");
+    }
+    // Función para agregar al carrito
+    async function addToCart(productoId, precio) {
+      const userId = localStorage.getItem("usuario_id");
+      console.log("Intentando agregar al carrito:", {
+        productoId,
+        precio,
+        userId,
+      });
+
+      if (!userId) {
+        Swal.fire({
+          title: "Iniciar sesión",
+          text: "Necesitas iniciar sesión para agregar productos al carrito",
+          icon: "info",
+          showCancelButton: true,
+          confirmButtonText: "Ir a login",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "login.html";
+          }
+        });
+        return;
       }
-      // Función para agregar al carrito
-      async function addToCart(productoId, precio) {
-        const userId = localStorage.getItem("usuario_id");
-        console.log("Intentando agregar al carrito:", {
-          productoId,
-          precio,
-          userId,
+
+      try {
+        const response = await fetch(`${API_URL}/carrito`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            usuario_id: parseInt(userId),
+            producto_id: productoId,
+            cantidad: 1,
+            precio_unitario: parseFloat(precio),
+          }),
         });
 
-        if (!userId) {
+        console.log("Respuesta del servidor:", response.status);
+        const data = await response.json();
+        console.log("Datos de respuesta:", data);
+
+        if (response.ok) {
           Swal.fire({
-            title: "Iniciar sesión",
-            text: "Necesitas iniciar sesión para agregar productos al carrito",
-            icon: "info",
-            showCancelButton: true,
-            confirmButtonText: "Ir a login",
-            cancelButtonText: "Cancelar",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = "login.html";
-            }
+            icon: "success",
+            title: "¡Éxito!",
+            text: "Producto agregado al carrito",
+            showConfirmButton: false,
+            timer: 1500,
           });
-          return;
-        }
-
-        try {
-          const response = await fetch(`${API_URL}/carrito`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              usuario_id: parseInt(userId),
-              producto_id: productoId,
-              cantidad: 1,
-              precio_unitario: parseFloat(precio),
-            }),
-          });
-
-          console.log("Respuesta del servidor:", response.status);
-          const data = await response.json();
-          console.log("Datos de respuesta:", data);
-
-          if (response.ok) {
-            Swal.fire({
-              icon: "success",
-              title: "¡Éxito!",
-              text: "Producto agregado al carrito",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            await actualizarContadorCarrito(userId);
-          } else {
-            throw new Error(data.error || "Error al agregar al carrito");
-          }
-        } catch (error) {
-          console.error("Error completo:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "No se pudo agregar el producto al carrito",
-          });
-        }
-      }
-
-      // Función para buscar productos
-      function searchProducts() {
-        const searchTerm = document
-          .getElementById("searchInput")
-          .value.toLowerCase();
-        if (searchTerm === "") {
-          productos = [...productosOriginal];
+          await actualizarContadorCarrito(userId);
         } else {
-          productos = productosOriginal.filter((producto) =>
-            producto.nombre.toLowerCase().includes(searchTerm)
-          );
+          throw new Error(data.error || "Error al agregar al carrito");
         }
-        renderProducts();
+      } catch (error) {
+        console.error("Error completo:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo agregar el producto al carrito",
+        });
       }
+    }
 
-      //Funcion para obtener nombre de usuario
-      async function obtenerNombreUsuario(usuarioId) {
-    try {
+    // Función para buscar productos
+    function searchProducts() {
+      const searchTerm = document
+        .getElementById("searchInput")
+        .value.toLowerCase();
+      if (searchTerm === "") {
+        productos = [...productosOriginal];
+      } else {
+        productos = productosOriginal.filter((producto) =>
+          producto.nombre.toLowerCase().includes(searchTerm)
+        );
+      }
+      renderProducts();
+    }
+
+    //Funcion para obtener nombre de usuario
+    async function obtenerNombreUsuario(usuarioId) {
+      try {
         const response = await fetch(`${API_URL}/usuario/${usuarioId}`);
         if (response.ok) {
-            const data = await response.json();
-            return data.nombre_completo;
+          const data = await response.json();
+          return data.nombre_completo;
         } else {
-            console.error("Error al obtener el usuario:", response.status);
-            return null;
+          console.error("Error al obtener el usuario:", response.status);
+          return null;
         }
-    } catch (error) {
+      } catch (error) {
         console.error("Error de red:", error);
         return null;
+      }
     }
-}
 
 
     // Función para inicializar la interfaz
     async function inicializarUsuario() {
-    const usuarioId = localStorage.getItem("usuario_id");
-    if (usuarioId) {
+      const usuarioId = localStorage.getItem("usuario_id");
+      if (usuarioId) {
         const nombreUsuario = await obtenerNombreUsuario(usuarioId);
         if (nombreUsuario) {
-            // Mostrar el nombre del usuario en el navbar
-            document.getElementById("userNameDisplay").classList.remove("d-none");
-            document.getElementById("userName").textContent = nombreUsuario;
+          // Mostrar el nombre del usuario en el navbar
+          document.getElementById("userNameDisplay").classList.remove("d-none");
+          document.getElementById("userName").textContent = nombreUsuario;
         }
-    }
-    checkLoginStatus();  // Verificar el estado de inicio de sesión y actualizar el botón correspondiente
-}
-
-
-
-      // Event listeners
-      document
-        .getElementById("searchInput")
-        .addEventListener("keyup", function (event) {
-          if (event.key === "Enter") {
-            searchProducts();
-          }
-        });
-
-      // Debounce para la búsqueda
-      let searchTimeout;
-      document
-        .getElementById("searchInput")
-        .addEventListener("input", function () {
-          clearTimeout(searchTimeout);
-          searchTimeout = setTimeout(searchProducts, 300);
-        });
-
-      // Inicialización
-      document.addEventListener("DOMContentLoaded", () => {
-        checkLoginStatus();
-        loadProducts();
-        inicializarUsuario();
-      });
-
-      // Función para manejar el scroll suave a las categorías
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault();
-          const targetId = this.getAttribute("href");
-          if (targetId === "#") return;
-
-          const target = document.querySelector(targetId);
-          if (target) {
-            target.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-            });
-          }
-        });
-      });
-
-      // Observador de intersección para animaciones al hacer scroll
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("show");
-            }
-          });
-        },
-        {
-          threshold: 0.1,
-        }
-      );
-
-      document.querySelectorAll(".product-card").forEach((card) => {
-        observer.observe(card);
-      });
-
-      // Función para mostrar notificaciones
-      function showNotification(message, type = "info") {
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          icon: type,
-          title: message,
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-        });
       }
+      checkLoginStatus();  // Verificar el estado de inicio de sesión y actualizar el botón correspondiente
+    }
 
-      // Manejo de errores global
-      window.onerror = function (msg, url, lineNo, columnNo, error) {
-        console.error(
-          "Error: ",
-          msg,
-          "URL: ",
-          url,
-          "Line: ",
-          lineNo,
-          "Column: ",
-          columnNo,
-          "Error object: ",
-          error
-        );
-        showNotification(
-          "Ha ocurrido un error. Por favor, intenta nuevamente.",
-          "error"
-        );
-        hideLoading();
-        return false;
-      };
-    </script>
-  </body>
+
+
+    // Event listeners
+    document
+      .getElementById("searchInput")
+      .addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+          searchProducts();
+        }
+      });
+
+    // Debounce para la búsqueda
+    let searchTimeout;
+    document
+      .getElementById("searchInput")
+      .addEventListener("input", function () {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(searchProducts, 300);
+      });
+
+    // Inicialización
+    document.addEventListener("DOMContentLoaded", () => {
+      checkLoginStatus();
+      loadProducts();
+      inicializarUsuario();
+    });
+
+    // Función para manejar el scroll suave a las categorías
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute("href");
+        if (targetId === "#") return;
+
+        const target = document.querySelector(targetId);
+        if (target) {
+          target.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      });
+    });
+
+    // Observador de intersección para animaciones al hacer scroll
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+      }
+    );
+
+    document.querySelectorAll(".product-card").forEach((card) => {
+      observer.observe(card);
+    });
+
+    // Función para mostrar notificaciones
+    function showNotification(message, type = "info") {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: type,
+        title: message,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    }
+
+    // Manejo de errores global
+    window.onerror = function (msg, url, lineNo, columnNo, error) {
+      console.error(
+        "Error: ",
+        msg,
+        "URL: ",
+        url,
+        "Line: ",
+        lineNo,
+        "Column: ",
+        columnNo,
+        "Error object: ",
+        error
+      );
+      showNotification(
+        "Ha ocurrido un error. Por favor, intenta nuevamente.",
+        "error"
+      );
+      hideLoading();
+      return false;
+    };
+  </script>
+</body>
+
 </html>

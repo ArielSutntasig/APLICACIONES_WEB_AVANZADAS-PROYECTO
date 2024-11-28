@@ -1,424 +1,419 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechShop - Chat de Cotización</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-    <style>
-      body {
-        background-color: #f0f2f5;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
 
-      .navbar {
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechShop - Chat de Cotización</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+  <style>
+    body {
+      background-color: #f0f2f5;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-      .chat-container {
-        flex: 1;
-        display: flex;
-        padding: 20px;
-        gap: 20px;
-        max-width: 1400px;
-        margin: 0 auto;
-        width: 100%;
-      }
+    .navbar {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-      .chat-section {
-        flex: 1;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-      }
+    .chat-container {
+      flex: 1;
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
 
-      .chat-header {
-        padding: 15px;
-        border-bottom: 1px solid #ddd;
-        background-color: #1976d2;
-        color: white;
-        border-radius: 8px 8px 0 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+    .chat-section {
+      flex: 1;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
 
-      .chat-messages {
-        flex: 1;
-        padding: 15px;
-        overflow-y: auto;
-        max-height: calc(100vh - 250px);
-      }
+    .chat-header {
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+      background-color: #1976d2;
+      color: white;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-      .message {
-        margin-bottom: 15px;
-        display: flex;
-        flex-direction: column;
-      }
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      max-height: calc(100vh - 250px);
+    }
 
-      .message-content {
-        max-width: 70%;
-        padding: 10px 15px;
-        border-radius: 15px;
-        margin-bottom: 5px;
-      }
+    .message {
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+    }
 
-      .message-time {
-        font-size: 0.75rem;
-        color: #666;
-      }
+    .message-content {
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 15px;
+      margin-bottom: 5px;
+    }
 
-      .message.received {
-        align-items: flex-start;
-      }
+    .message-time {
+      font-size: 0.75rem;
+      color: #666;
+    }
 
-      .message.sent {
-        align-items: flex-end;
-      }
+    .message.received {
+      align-items: flex-start;
+    }
 
-      .received .message-content {
-        background-color: #f0f2f5;
-      }
+    .message.sent {
+      align-items: flex-end;
+    }
 
-      .sent .message-content {
-        background-color: #1976d2;
-        color: white;
-      }
+    .received .message-content {
+      background-color: #f0f2f5;
+    }
 
-      .chat-input {
-        padding: 15px;
-        border-top: 1px solid #ddd;
-        background-color: white;
-        border-radius: 0 0 8px 8px;
-      }
+    .sent .message-content {
+      background-color: #1976d2;
+      color: white;
+    }
 
-      .chat-input form {
-        display: flex;
-        gap: 10px;
-      }
+    .chat-input {
+      padding: 15px;
+      border-top: 1px solid #ddd;
+      background-color: white;
+      border-radius: 0 0 8px 8px;
+    }
 
-      .chat-input input {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        outline: none;
-      }
+    .chat-input form {
+      display: flex;
+      gap: 10px;
+    }
 
-      .chat-input button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 20px;
-        background-color: #1976d2;
-        color: white;
-        cursor: pointer;
-      }
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      outline: none;
+    }
 
-      .chat-input button:hover {
-        background-color: #1565c0;
-      }
+    .chat-input button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      background-color: #1976d2;
+      color: white;
+      cursor: pointer;
+    }
 
-      .chat-clients {
-  width: 25%;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-}
-#clientsList {
-  flex: 1;
-  overflow-y: auto;
-}
-#clientsList .list-group-item {
-  cursor: pointer;
-}
+    .chat-input button:hover {
+      background-color: #1565c0;
+    }
 
-/* Add this to your existing style section */
-#clientsList .list-group-item.active {
-  background-color: #e9ecef;
-  border-color: #dee2e6;
-  color: #212529;
-}
-    </style>
-  </head>
-  <body>
-      <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-          <a class="navbar-brand" href="home.html">TechShop</a>
-          <button class="btn btn-secondary" onclick="history.back()">
-            <i class="fas fa-arrow-left"></i> Volver
+    .chat-clients {
+      width: 25%;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    #clientsList {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    #clientsList .list-group-item {
+      cursor: pointer;
+    }
+
+    /* Add this to your existing style section */
+    #clientsList .list-group-item.active {
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+      color: #212529;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="home.html">TechShop</a>
+      <button class="btn btn-secondary" onclick="history.back()">
+        <i class="fas fa-arrow-left"></i> Volver
+      </button>
+    </div>
+  </nav>
+
+  <div class="chat-container">
+    <!-- Lista de clientes -->
+    <div class="chat-clients">
+      <div class="chat-header">
+        <h5 class="mb-0">Clientes Activos</h5>
+      </div>
+      <ul id="clientsList" class="list-group">
+        <!-- Los clientes se llenarán dinámicamente -->
+      </ul>
+    </div>
+
+    <!-- Sección del chat -->
+    <div class="chat-section">
+      <div class="chat-header">
+        <h5 class="mb-0">Chat de Cotización</h5>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input">
+        <form id="chatForm">
+          <input type="text" placeholder="Escribe tu mensaje..." id="messageInput" />
+          <button type="submit">
+            <i class="fas fa-paper-plane"></i> Enviar
           </button>
-        </div>
-      </nav>
-
-    <div class="chat-container">
-      <!-- Lista de clientes -->
-      <div class="chat-clients">
-        <div class="chat-header">
-          <h5 class="mb-0">Clientes Activos</h5>
-        </div>
-        <ul id="clientsList" class="list-group">
-          <!-- Los clientes se llenarán dinámicamente -->
-        </ul>
+        </form>
       </div>
-    
-      <!-- Sección del chat -->
-      <div class="chat-section">
-        <div class="chat-header">
-          <h5 class="mb-0">Chat de Cotización</h5>
-        </div>
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-input">
-          <form id="chatForm">
-            <input
-              type="text"
-              placeholder="Escribe tu mensaje..."
-              id="messageInput"
-            />
-            <button type="submit">
-              <i class="fas fa-paper-plane"></i> Enviar
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>    
-    
+    </div>
+  </div>
 
-    <script>
-      let isAsesor = false;
-      let currentReceptorId = null;
 
-      const socket = io("http://localhost:5000");
+  <script>
+    let isAsesor = false;
+    let currentReceptorId = null;
 
-      const userId = parseInt(localStorage.getItem("usuario_id"));
-      const userEmail = localStorage.getItem("email_usuario");
+    const socket = io("http://localhost:5000");
 
-      if (!userId) {
-        alert("Debes iniciar sesión para usar el chat.");
-        window.location.href = "login.html";
-      }
+    const userId = parseInt(localStorage.getItem("usuario_id"));
+    const userEmail = localStorage.getItem("email_usuario");
 
-      // Función para agregar mensaje al chat
-      function addMessage(content, emisorId, fecha) {
-        const chatMessages = document.getElementById("chatMessages");
-        const messageDiv = document.createElement("div");
-        const isOwnMessage = emisorId === userId;
+    if (!userId) {
+      alert("Debes iniciar sesión para usar el chat.");
+      window.location.href = "login.html";
+    }
 
-        messageDiv.className = `message ${isOwnMessage ? "sent" : "received"}`;
-        const time = new Date(fecha).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+    // Función para agregar mensaje al chat
+    function addMessage(content, emisorId, fecha) {
+      const chatMessages = document.getElementById("chatMessages");
+      const messageDiv = document.createElement("div");
+      const isOwnMessage = emisorId === userId;
 
-        messageDiv.innerHTML = `
+      messageDiv.className = `message ${isOwnMessage ? "sent" : "received"}`;
+      const time = new Date(fecha).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      messageDiv.innerHTML = `
           <div class="message-content">${content}</div>
           <div class="message-time">${time}</div>
         `;
 
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Función para cargar mensajes
+    // In chat.html - Update loadMessages function
+    async function loadMessages() {
+      try {
+        const targetId = isAsesor ? currentReceptorId : userId;
+        const response = await fetch(`http://localhost:5000/mensajes/${targetId}`);
+        if (!response.ok) {
+          throw new Error(`Error del servidor: ${response.status}`);
+        }
+
+        document.getElementById("chatMessages").innerHTML = "";
+        const mensajes = await response.json();
+        mensajes.forEach((msg) => {
+          addMessage(msg.contenido, msg.emisor_id, msg.fecha);
+        });
+
+        // Mark messages as read if asesor is viewing them
+        if (isAsesor && currentReceptorId) {
+          await fetch(`http://localhost:5000/marcar-mensajes-leidos/${currentReceptorId}`, {
+            method: 'POST'
+          });
+          // Update badge counter
+          updateNotificationBadge(currentReceptorId, false);
+        }
+      } catch (error) {
+        console.error("Error cargando mensajes:", error);
       }
-
-      // Función para cargar mensajes
-            // In chat.html - Update loadMessages function
-      async function loadMessages() {
-          try {
-              const targetId = isAsesor ? currentReceptorId : userId;
-              const response = await fetch(`http://localhost:5000/mensajes/${targetId}`);
-              if (!response.ok) {
-                  throw new Error(`Error del servidor: ${response.status}`);
-              }
-      
-              document.getElementById("chatMessages").innerHTML = "";
-              const mensajes = await response.json();
-              mensajes.forEach((msg) => {
-                  addMessage(msg.contenido, msg.emisor_id, msg.fecha);
-              });
-      
-              // Mark messages as read if asesor is viewing them
-              if (isAsesor && currentReceptorId) {
-                  await fetch(`http://localhost:5000/marcar-mensajes-leidos/${currentReceptorId}`, {
-                      method: 'POST'
-                  });
-                  // Update badge counter
-                  updateNotificationBadge(currentReceptorId, false);
-              }
-          } catch (error) {
-              console.error("Error cargando mensajes:", error);
-          }
-      }
+    }
 
 
-      async function loadActiveClients() {
-    if (!isAsesor) {
+    async function loadActiveClients() {
+      if (!isAsesor) {
         console.log("Not asesor, skipping load clients");
         return;
-    }
-    
-    console.log("Loading active clients as asesor...");
-    
-    try {
+      }
+
+      console.log("Loading active clients as asesor...");
+
+      try {
         // Add timeout and proper error handling
         const response = await fetch("http://localhost:5000/obtener-chats-activos", {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            mode: 'cors',
-            timeout: 5000 // 5 second timeout
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          mode: 'cors',
+          timeout: 5000 // 5 second timeout
         });
-        
+
         console.log("Response received:", response.status);
-        
+
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const clients = await response.json();
         console.log("Clients data:", clients);
-        
+
         const clientsList = document.getElementById("clientsList");
         clientsList.innerHTML = "";
 
         if (!clients || clients.length === 0) {
-            clientsList.innerHTML = `<li class="list-group-item">No hay clientes activos</li>`;
-            return;
+          clientsList.innerHTML = `<li class="list-group-item">No hay clientes activos</li>`;
+          return;
         }
 
         clients.forEach((client) => {
-            const listItem = document.createElement("li");
-            listItem.className = "list-group-item d-flex justify-content-between align-items-center";
-            listItem.dataset.clientId = client.usuario_id;
-            
-            listItem.innerHTML = `
+          const listItem = document.createElement("li");
+          listItem.className = "list-group-item d-flex justify-content-between align-items-center";
+          listItem.dataset.clientId = client.usuario_id;
+
+          listItem.innerHTML = `
                 <span>${client.nombre || 'Usuario sin nombre'}</span>
                 <span class="badge bg-primary">${client.mensajes_no_leidos || 0}</span>
             `;
 
-            listItem.addEventListener("click", () => {
-    document.querySelectorAll('#clientsList li').forEach(li => li.classList.remove('active'));
-    listItem.classList.add('active');
-    currentReceptorId = parseInt(client.usuario_id);
-    document.getElementById("chatMessages").innerHTML = "";
-    loadMessages();
-    // Reset notification counter when selecting client
-    updateNotificationBadge(client.usuario_id, false);
-});
+          listItem.addEventListener("click", () => {
+            document.querySelectorAll('#clientsList li').forEach(li => li.classList.remove('active'));
+            listItem.classList.add('active');
+            currentReceptorId = parseInt(client.usuario_id);
+            document.getElementById("chatMessages").innerHTML = "";
+            loadMessages();
+            // Reset notification counter when selecting client
+            updateNotificationBadge(client.usuario_id, false);
+          });
 
-            clientsList.appendChild(listItem);
+          clientsList.appendChild(listItem);
         });
-    } catch (error) {
+      } catch (error) {
         console.error("Error details:", error);
-        document.getElementById("clientsList").innerHTML = 
-            `<li class="list-group-item text-danger">Error al cargar clientes activos: ${error.message}</li>`;
+        document.getElementById("clientsList").innerHTML =
+          `<li class="list-group-item text-danger">Error al cargar clientes activos: ${error.message}</li>`;
+      }
     }
-}
 
-// Add this function after loadActiveClients()
-function updateNotificationBadge(clientId, increment = true) {
-    const clientItem = document.querySelector(`#clientsList li[data-client-id="${clientId}"]`);
-    if (clientItem) {
+    // Add this function after loadActiveClients()
+    function updateNotificationBadge(clientId, increment = true) {
+      const clientItem = document.querySelector(`#clientsList li[data-client-id="${clientId}"]`);
+      if (clientItem) {
         const badge = clientItem.querySelector('.badge');
         let count = parseInt(badge.textContent) || 0;
         count = increment ? count + 1 : 0;
         badge.textContent = count;
+      }
     }
-}
 
-      // Envío de mensajes
-      document.getElementById("chatForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const input = document.getElementById("messageInput");
-  const message = input.value.trim();
+    // Envío de mensajes
+    document.getElementById("chatForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const input = document.getElementById("messageInput");
+      const message = input.value.trim();
 
-  if (message && currentReceptorId) {
-    const messageData = {
-      emisor_id: userId,
-      receptor_id: currentReceptorId, // Ahora definido dinámicamente
-      contenido: message,
-    };
+      if (message && currentReceptorId) {
+        const messageData = {
+          emisor_id: userId,
+          receptor_id: currentReceptorId, // Ahora definido dinámicamente
+          contenido: message,
+        };
 
-    socket.emit("enviar_mensaje", messageData);
-    addMessage(message, userId, new Date().toISOString());
-    input.value = "";
-  } else {
-    alert("Selecciona un cliente antes de enviar un mensaje.");
-  }
-});
+        socket.emit("enviar_mensaje", messageData);
+        addMessage(message, userId, new Date().toISOString());
+        input.value = "";
+      } else {
+        alert("Selecciona un cliente antes de enviar un mensaje.");
+      }
+    });
 
 
-      // Conexión y login
+    // Conexión y login
     // At the start of chat.html
     console.log("Starting chat application...");
-    
+
     socket.on("connect", async () => {
-    console.log("Socket connected with ID:", socket.id);
-    console.log("User email:", userEmail);
-    console.log("User ID:", userId);
-    
-    isAsesor = userEmail === "asesor.comercial@gmail.com";
-    console.log("Is asesor:", isAsesor);
-    
-    if (isAsesor) {
+      console.log("Socket connected with ID:", socket.id);
+      console.log("User email:", userEmail);
+      console.log("User ID:", userId);
+
+      isAsesor = userEmail === "asesor.comercial@gmail.com";
+      console.log("Is asesor:", isAsesor);
+
+      if (isAsesor) {
         try {
-            console.log("Attempting to load clients as asesor...");
-            await loadActiveClients();
-            setInterval(loadActiveClients, 30000);
+          console.log("Attempting to load clients as asesor...");
+          await loadActiveClients();
+          setInterval(loadActiveClients, 30000);
         } catch (error) {
-            console.error("Error in initial client load:", error);
+          console.error("Error in initial client load:", error);
         }
-    } else {
+      } else {
         console.log("Regular user - getting asesor ID");
         try {
-            const response = await fetch("http://localhost:5000/obtener-asesor");
-            const data = await response.json();
-            currentReceptorId = data.asesor_id;
-            console.log("Asesor ID received:", currentReceptorId);
+          const response = await fetch("http://localhost:5000/obtener-asesor");
+          const data = await response.json();
+          currentReceptorId = data.asesor_id;
+          console.log("Asesor ID received:", currentReceptorId);
         } catch (error) {
-            console.error("Error getting asesor:", error);
+          console.error("Error getting asesor:", error);
         }
-    }
+      }
 
-    socket.emit("login", { usuario_id: userId, email: userEmail });
-});
+      socket.emit("login", { usuario_id: userId, email: userEmail });
+    });
 
 
-      // Recepción de mensajes
-      socket.on("mensaje_nuevo", (data) => {
-    const shouldDisplay =
+    // Recepción de mensajes
+    socket.on("mensaje_nuevo", (data) => {
+      const shouldDisplay =
         data.receptor_id === userId ||
         data.emisor_id === userId ||
         (data.is_broadcast && !isAsesor);
 
-    if (shouldDisplay) {
+      if (shouldDisplay) {
         addMessage(data.contenido, data.emisor_id, data.fecha);
-        
+
         // Update notification counter for incoming messages
         if (isAsesor && data.emisor_id !== userId) {
-            updateNotificationBadge(data.emisor_id, true);
+          updateNotificationBadge(data.emisor_id, true);
         }
-    }
-});
+      }
+    });
 
-      // Cargar mensajes al inicio
-      document.addEventListener("DOMContentLoaded", loadMessages);
-      document.addEventListener("DOMContentLoaded", loadActiveClients);
+    // Cargar mensajes al inicio
+    document.addEventListener("DOMContentLoaded", loadMessages);
+    document.addEventListener("DOMContentLoaded", loadActiveClients);
 
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
