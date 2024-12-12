@@ -281,7 +281,7 @@
             if (response.ok) {
               const result = await response.json();
               alert("Usuario creado exitosamente. Por favor, inicia sesión.");
-              window.location.href = "login.html"; // Redirige al login
+              window.location.href = "index.html"; // Redirige al login
             } else {
               const error = await response.json();
               alert(`Error: ${error.error}`);

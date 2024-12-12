@@ -411,7 +411,7 @@
       } else {
         // Usuario logueado, mostrar el botón de Cerrar Sesión
         document.getElementById("userContainer").innerHTML = `
-            <a href="login.html" class="btn btn-primary" id="loginButton">
+            <a href="index.html" class="btn btn-primary" id="loginButton">
                 <i class="fas fa-user"></i> Cerrar Sesión
             </a>
         `;
@@ -423,7 +423,7 @@
     function logout() {
       localStorage.removeItem("usuario_id");
       localStorage.removeItem("nombre_completo");
-      window.location.href = "login.html";
+      window.location.href = "index.html";
     }
 
     // Función para actualizar el contador del carrito
@@ -574,7 +574,7 @@
           cancelButtonText: "Cancelar",
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.href = "login.html";
+            window.location.href = "index.html";
           }
         });
         return;
